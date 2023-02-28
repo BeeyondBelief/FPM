@@ -5,6 +5,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(GroundCheck))]
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
@@ -32,29 +33,22 @@ public class PlayerMovement : MonoBehaviour
     public float airFroce;
     bool readyToJump = true;
 
-    [Header("Ground Control")]
-    public float playerHeight;
-    public LayerMask ground;
-    public float groundDrag;
-
 
     public Rigidbody Rbody { get; private set; }
-    GroundControl gc;
+    GroundCheck gc;
     SpeedControl sc;
 
     void Start()
     {
         Rbody = GetComponent<Rigidbody>();
+        gc = GetComponent<GroundCheck>();
         Rbody.freezeRotation = true;
-        gc = new GroundControl(this);
         sc = new SpeedControl(this);
     }
 
     void Update()
     {
-        Debug.Log(Rbody.velocity.magnitude.ToString());
         ReadInputs();
-        gc.Control();
         sc.Control();
         StateHandler();
     }

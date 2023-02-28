@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 93229854}
   - component: {fileID: 93229855}
   m_Layer: 0
-  m_Name: CameraHolder
+  m_Name: ChameraHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,6 +180,9 @@ GameObject:
   - component: {fileID: 547490390}
   - component: {fileID: 547490391}
   - component: {fileID: 547490392}
+  - component: {fileID: 547490393}
+  - component: {fileID: 547490394}
+  - component: {fileID: 547490395}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -241,11 +244,51 @@ MonoBehaviour:
   jumpForce: 7
   jumpCooldown: 0.1
   airFroce: 0.2
-  playerHeight: 2
-  ground:
+--- !u!114 &547490393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547490389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d4999a4be5c943088e8836dab369510, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  considerColliderAs: {fileID: 564895287}
+  considerGroundAs:
     serializedVersion: 2
     m_Bits: 64
-  groundDrag: 6
+--- !u!114 &547490394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547490389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c11302d2783f4edab2bd46f1d09cd7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Rbody: {fileID: 547490391}
+  drag: 5
+--- !u!114 &547490395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547490389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
 --- !u!1 &564895286
 GameObject:
   m_ObjectHideFlags: 0
