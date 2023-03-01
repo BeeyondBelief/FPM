@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCamera : MonoBehaviour
+public class CameraRotation : MonoBehaviour
 {
     public float sensitivityX;
     public float sensitivityY;
-    public Transform rotationObject;
-    public Transform cameraPosition;
+    public Transform orientation;
 
     private float yRotation, xRotation;
 
@@ -29,10 +28,7 @@ public class PlayerCamera : MonoBehaviour
 
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.SetPositionAndRotation(
-            cameraPosition.position,
-            Quaternion.Euler(xRotation, yRotation, 0)
-        );
-        rotationObject.rotation = Quaternion.Euler(0, yRotation, 0);
+        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
     }
 }
