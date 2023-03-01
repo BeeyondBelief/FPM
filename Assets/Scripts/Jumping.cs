@@ -24,7 +24,7 @@ public class Jumping : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-        if (Input.GetKey(jumpKey) && readyToJump && gc.onGround)
+        if (InputController.GetKey(jumpKey) && readyToJump && gc.onGround)
         {
             readyToJump = false;
 

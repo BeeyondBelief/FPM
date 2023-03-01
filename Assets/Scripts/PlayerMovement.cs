@@ -19,14 +19,6 @@ public class PlayerMovement : MonoBehaviour
     public float MoveSpeed { get; private set; }
     Vector3 modeDirection;
 
-    MoveState moveState;
-    enum MoveState
-    {
-        walking,
-        sprinting,
-        air
-    }
-
     private Rigidbody Rbody;
     private GroundCheck gc;
 
@@ -50,27 +42,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void StateHandler()
     {
-        // sprint
         if (gc.onGround && Input.GetKey(sprintKey))
         {
-            moveState = MoveState.sprinting;
             MoveSpeed = sprintSpeed;
         }
         else if (gc.onGround)
         {
-            moveState = MoveState.walking;
             MoveSpeed = walkSpeed;
-        }
-        else
-        {
-            moveState = MoveState.air;
         }
     }
 
     private void ReadInputs()
     {
-        hostizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        hostizontalInput = InputController.GetHorizontalRaw();
+        verticalInput = InputController.GetVertialRaw();
     }
 
     private void Move()
