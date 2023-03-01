@@ -7,7 +7,7 @@ using UnityEngine;
 public class SurfaceResistance : MonoBehaviour
 {
     public Rigidbody Rbody;
-    public float drag;
+    public float resistance;
 
     private GroundCheck gc;
 
@@ -19,7 +19,7 @@ public class SurfaceResistance : MonoBehaviour
     void Update()
     {
         if (gc.onGround)
-            Rbody.drag = drag;
+            Rbody.drag = resistance;
         else
             Rbody.drag = 0;
     }

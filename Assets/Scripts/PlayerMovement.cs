@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed;
     public float sprintSpeed;
     public Transform orientation;
+    public float airResistance;
     float additionalForce = 10f;
     float hostizontalInput, verticalInput;
     public float moveSpeed { get; private set; }
@@ -25,14 +26,6 @@ public class PlayerMovement : MonoBehaviour
         sprinting,
         air
     }
-
-    [Header("Jumping")]
-    public KeyCode jumpKey = KeyCode.Space;
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airFroce;
-    bool readyToJump = true;
-
 
     public Rigidbody Rbody { get; private set; }
     GroundCheck gc;
@@ -81,16 +74,6 @@ public class PlayerMovement : MonoBehaviour
     {
         hostizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-
-        // need jump
-        if (Input.GetKey(jumpKey) && readyToJump && gc.onGround)
-        {
-            readyToJump = false;
-
-            Jump();
-
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
     }
 
     private void Move()
@@ -102,17 +85,6 @@ public class PlayerMovement : MonoBehaviour
             Rbody.AddForce(force, ForceMode.Force);
         // air
         else if (!gc.onGround)
-            Rbody.AddForce(force * airFroce, ForceMode.Force);
-    }
-
-    private void Jump()
-    {
-        Rbody.velocity = new Vector3(Rbody.velocity.x, 0f, Rbody.velocity.z);
-        Rbody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-    }
-
-    private void ResetJump()
-    {
-        readyToJump = true;
+            Rbody.AddForce(force * airResistance, ForceMode.Force);
     }
 }
