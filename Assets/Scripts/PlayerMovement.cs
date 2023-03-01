@@ -12,11 +12,11 @@ public class PlayerMovement : MonoBehaviour
     public KeyCode sprintKey = KeyCode.LeftShift;
     public float walkSpeed;
     public float sprintSpeed;
-    public Transform orientation;
     public float airResistance;
-    float additionalForce = 10f;
-    float hostizontalInput, verticalInput;
-    public float moveSpeed { get; private set; }
+    readonly float additionalForce = 10f;
+    float hostizontalInput;
+    float verticalInput;
+    public float MoveSpeed { get; private set; }
     Vector3 modeDirection;
 
     MoveState moveState;
@@ -27,22 +27,19 @@ public class PlayerMovement : MonoBehaviour
         air
     }
 
-    public Rigidbody Rbody { get; private set; }
-    GroundCheck gc;
-    SpeedControl sc;
+    private Rigidbody Rbody;
+    private GroundCheck gc;
 
     void Start()
     {
         Rbody = GetComponent<Rigidbody>();
         gc = GetComponent<GroundCheck>();
         Rbody.freezeRotation = true;
-        sc = new SpeedControl(this);
     }
 
     void Update()
     {
         ReadInputs();
-        sc.Control();
         StateHandler();
     }
 
@@ -57,12 +54,12 @@ public class PlayerMovement : MonoBehaviour
         if (gc.onGround && Input.GetKey(sprintKey))
         {
             moveState = MoveState.sprinting;
-            moveSpeed = sprintSpeed;
+            MoveSpeed = sprintSpeed;
         }
         else if (gc.onGround)
         {
             moveState = MoveState.walking;
-            moveSpeed = walkSpeed;
+            MoveSpeed = walkSpeed;
         }
         else
         {
@@ -78,13 +75,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        modeDirection = orientation.forward * verticalInput + orientation.right * hostizontalInput;
+        modeDirection = Rbody.transform.forward * verticalInput +
+                        Rbody.transform.right * hostizontalInput;
 
-        Vector3 force = modeDirection.normalized * moveSpeed * additionalForce;
+        Vector3 force = modeDirection.normalized * MoveSpeed * additionalForce;
         if (gc.onGround)
+        {
             Rbody.AddForce(force, ForceMode.Force);
+        }
         // air
         else if (!gc.onGround)
+        {
             Rbody.AddForce(force * airResistance, ForceMode.Force);
+        }
     }
 }
