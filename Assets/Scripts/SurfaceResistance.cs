@@ -4,23 +4,25 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(GroundCheck))]
+[RequireComponent(typeof(Rigidbody))]
 public class SurfaceResistance : MonoBehaviour
 {
-    public Rigidbody Rbody;
     public float resistance;
 
     private GroundCheck gc;
+    private Rigidbody body;
 
     void Start()
     {
         gc = GetComponent<GroundCheck>();
+        body = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        if (gc.onGround)
-            Rbody.drag = resistance;
+        if (gc.OnGround)
+            body.drag = resistance;
         else
-            Rbody.drag = 0;
+            body.drag = 0;
     }
 }

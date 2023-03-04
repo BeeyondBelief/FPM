@@ -27,7 +27,7 @@ public class AirResistance : MonoBehaviour
         Vector3 modeDirection = orientation.forward * verticalInput + orientation.right * hostizontalInput;
 
         Vector3 force = modeDirection.normalized * resistance;
-        if (!gc.onGround)
+        if (!gc.OnGround)
             Rbody.AddForce(-force, ForceMode.Force);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ThirdPersonMovement : MonoBehaviour
 {
 
-    public CharacterController controller;
+    public Rigidbody body;
     public Transform cam;
     public float speed = 7f;
     public float turnTime = 0.1f;
@@ -28,8 +28,7 @@ public class ThirdPersonMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             direction = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(speed * Time.deltaTime * direction);
-            //controller.AddForce(force * Time.deltaTime * direction, ForceMode.Force);
+            body.AddForce(speed * 100f * Time.deltaTime * direction, ForceMode.Acceleration);
         }
 
     }
