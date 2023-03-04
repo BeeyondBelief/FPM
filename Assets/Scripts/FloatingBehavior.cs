@@ -17,7 +17,7 @@ public class FloatingBehavior : MonoBehaviour
     private float springForce;
     private float desiredHeight;
     
-    void Start()
+    void Awake()
     {
         Rb = GetComponent<Rigidbody>();
         Gch = GetComponent<GroundCheck>();

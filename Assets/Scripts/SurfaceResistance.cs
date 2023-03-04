@@ -12,7 +12,7 @@ public class SurfaceResistance : MonoBehaviour
     private GroundCheck gc;
     private Rigidbody body;
 
-    void Start()
+    void Awake()
     {
         gc = GetComponent<GroundCheck>();
         body = GetComponent<Rigidbody>();
