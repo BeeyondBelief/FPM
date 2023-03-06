@@ -416,16 +416,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 547490390}
-  - component: {fileID: 547490391}
   - component: {fileID: 547490401}
   - component: {fileID: 547490400}
   - component: {fileID: 547490403}
   - component: {fileID: 547490404}
-  - component: {fileID: 547490402}
-  - component: {fileID: 547490405}
-  - component: {fileID: 547490407}
   - component: {fileID: 547490408}
   - component: {fileID: 547490409}
+  - component: {fileID: 547490410}
+  - component: {fileID: 547490411}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -452,22 +450,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &547490391
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 547490389}
-  serializedVersion: 2
-  m_Mass: 70
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 1
 --- !u!23 &547490400
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -518,24 +500,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 547490389}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &547490402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 547490389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e40cfea8093b74bb0abd6df257672b95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GroundIs:
-    serializedVersion: 2
-    m_Bits: 64
-  floatingHeight: 2
-  springStrength: 300
-  springDumper: 30
 --- !u!136 &547490403
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -566,32 +530,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   maxDistance: 2
---- !u!114 &547490405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 547490389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c11302d2783f4edab2bd46f1d09cd7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resistance: 2
---- !u!114 &547490407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 547490389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e646392f3fdd24bf8ae9aad223f62eaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speedLimit: 20
 --- !u!114 &547490408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,13 +543,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 963194228}
-  speed: 14
+  speed: 7
   turnTime: 0.1
-  rotateWhileMoving: 0
-  rotateWithCamera: 1
   jumpKey: 32
   jumpCooldown: 0.3
-  jumpForce: 600
+  jumpForce: 7
+  gravityForce: -15
 --- !u!114 &547490409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -654,6 +591,36 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &547490410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547490389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71c0500e1298b40cbb650b28f175bab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!143 &547490411
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547490389}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &564895286
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,7 +810,7 @@ GameObject:
   - component: {fileID: 821773215}
   - component: {fileID: 821773214}
   - component: {fileID: 821773213}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1270,7 +1237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1332698863
 MonoBehaviour:
   m_ObjectHideFlags: 0

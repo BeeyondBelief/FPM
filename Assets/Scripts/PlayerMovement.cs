@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(GroundCheck))]
-[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerReader))]
 public class PlayerMovement : MonoBehaviour
 {
 
@@ -12,8 +12,6 @@ public class PlayerMovement : MonoBehaviour
     public Transform cam;
     public float speed = 7f;
     public float turnTime = 0.1f;
-    public bool rotateWhileMoving = true;
-    public bool rotateWithCamera = false;
 
     private float turnSmoothVelosity;
 
@@ -22,80 +20,81 @@ public class PlayerMovement : MonoBehaviour
     public float jumpCooldown;
     public float jumpForce;
 
-    private bool readyToJump = true;
-    private Rigidbody body;
-    private GroundCheck gc;
-    private PlayerInput playerInput;
+    [Header("Gravity")]
+    public float gravityForce = -9.81f;
 
-    private Vector2 directionFlat;
-    private Vector3 direction;
-    private float horizontal;
-    private float vertial;
-    private bool jumpPressed;
+    private bool readyToJump = true;
+    private CharacterController controller;
+    private GroundCheck gc;
+    private PlayerReader playerReader;
+
+
+    private Vector3 velocity;
 
     void Awake()
     {
-        body = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
         gc = GetComponent<GroundCheck>();
-        playerInput = GetComponent<PlayerInput>();
+        playerReader = GetComponent<PlayerReader>();
     }
 
     private void Update()
     {
-        ReadInputs();
-        handleJump();
-    }
+        playerReader.ReadInputs();
 
-    private void ReadInputs()
-    {
-        directionFlat = playerInput.actions["Move"].ReadValue<Vector2>();
-        direction = new Vector3(directionFlat.x, 0f, directionFlat.y).normalized;
-        jumpPressed = playerInput.actions["Jump"].triggered;
-    }
+        // обновление направления движения в зависимости от направления камеры
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, cam.eulerAngles.y, transform.eulerAngles.z);
 
-    void FixedUpdate()
-    {
-        if (rotateWithCamera)
+        if (controller.isGrounded)
         {
-            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, cam.transform.localEulerAngles.y, transform.localEulerAngles.z);
-        }
+            velocity.y = -1f;
 
-        if (direction.magnitude >= 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            direction = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            body.AddForce(speed * 100f * Time.deltaTime * direction, ForceMode.Acceleration);
-            if (rotateWhileMoving)
+            if (playerReader.JumpPressed)
             {
-                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
-                                                    targetAngle,
-                                                    ref turnSmoothVelosity,
-                                                    turnTime);
-                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+                velocity.y = jumpForce;
             }
         }
-    }
-
-    private void handleJump()
-    {
-        if (jumpPressed && readyToJump && gc.OnGround)
+        else
         {
-            readyToJump = false;
-
-            Jump();
-
-            Invoke(nameof(ResetJump), jumpCooldown);
+            velocity.y += gravityForce * Time.deltaTime;
         }
+
+        if (playerReader.Direction.magnitude > 0.1f)
+        {
+            Vector3 moveDirection = transform.right * playerReader.Direction.x +
+                                    transform.forward * playerReader.Direction.z;
+            controller.Move(speed * Time.deltaTime * moveDirection);
+        }
+
+        controller.Move(velocity * Time.deltaTime);
+
     }
 
-    private void Jump()
-    {
-        body.velocity = new Vector3(body.velocity.x, 0f, body.velocity.z);
-        body.AddForce(body.transform.up * jumpForce, ForceMode.Impulse);
-    }
+    //private void HandleJump()
+    //{
+    //    if (playerReader.JumpPressed && readyToJump && gc.OnGround)
+    //    {
+    //        readyToJump = false;
 
-    private void ResetJump()
-    {
-        readyToJump = true;
-    }
+    //        Jump();
+
+    //        Invoke(nameof(ResetJump), jumpCooldown);
+    //    }
+    //}
+
+    //private void Jump()
+    //{
+    //    //body.velocity = new Vector3(body.velocity.x, 0f, body.velocity.z);
+    //    //body.AddForce(body.transform.up * jumpForce, ForceMode.Impulse);
+    //    if (gc.OnGround)
+    //    {
+    //        controller.Move(new Vector3(0f, jumpForce, 0f) * Time.deltaTime);
+    //    }
+        
+    //}
+
+    //private void ResetJump()
+    //{
+    //    readyToJump = true;
+    //}
 }
