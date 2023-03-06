@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-[RequireComponent(typeof(PlayerInput))]
-public class PlayerReader : MonoBehaviour
+public class PlayerReader
 {
     private PlayerInput inp;
 
@@ -13,9 +12,9 @@ public class PlayerReader : MonoBehaviour
     public Vector3 Direction { get; private set; }
     public bool JumpPressed { get; private set; }
 
-    public void Awake()
+    public PlayerReader(PlayerInput inp)
     {
-        inp = GetComponent<PlayerInput>();
+        this.inp = inp;
     }
 
     public Vector3 ReadDirection()

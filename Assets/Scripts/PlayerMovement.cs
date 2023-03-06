@@ -2,9 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-[RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(GroundCheck))]
-[RequireComponent(typeof(PlayerReader))]
 public class PlayerMovement : MonoBehaviour
 {
 
@@ -19,46 +16,49 @@ public class PlayerMovement : MonoBehaviour
     [Header("Gravity")]
     public float gravityForce = -9.81f;
 
-    private CharacterController controller;
-    private GroundCheck gc;
-    private PlayerReader playerReader;
+    [Header("Helpers")]
+    [SerializeField] private CharacterController _controller;
+    [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] private SurfaceSlider _slider;
 
-    private Vector3 velocity;
-    private Vector3 moveDirection;
+    private PlayerReader _playerReader;
+    private Vector3 _velocity;
+    private Vector3 _slopeVelocity;
+    private Vector3 _moveDirection;
 
-    void Awake()
+    private void Awake()
     {
-        controller = GetComponent<CharacterController>();
-        gc = GetComponent<GroundCheck>();
-        playerReader = GetComponent<PlayerReader>();
+        _playerReader = new PlayerReader(_playerInput);
     }
 
     private void Update()
     {
-        playerReader.ReadInputs();
+        _playerReader.ReadInputs();
         ApplyCameraAngles();
         ApplyGravity();
         ApplyJump();
         ApplyMove();
 
-        controller.Move(speed * Time.deltaTime * moveDirection +
-                        velocity * Time.deltaTime);
+        Vector3 moveAlongSurface = _slider.Project(_moveDirection);
+        _controller.Move(speed * Time.deltaTime * moveAlongSurface +
+                        _velocity * Time.deltaTime);
 
     }
+   
 
     /// <summary>
     /// Изменяет moveDirection в соответсвии с желаемым направлением движения
     /// </summary>
     private void ApplyMove()
     {
-        if (playerReader.Direction.magnitude > 0.1f)
+        if (_playerReader.Direction.magnitude > 0.1f)
         {
-            moveDirection = transform.right * playerReader.Direction.x +
-                            transform.forward * playerReader.Direction.z;
+            _moveDirection = transform.right * _playerReader.Direction.x +
+                            transform.forward * _playerReader.Direction.z;
         }
         else
         {
-            moveDirection = Vector3.zero;
+            _moveDirection = Vector3.zero;
         }
     }
 
@@ -67,9 +67,9 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void ApplyJump()
     {
-        if (controller.isGrounded && playerReader.JumpPressed)
+        if (_controller.isGrounded && _playerReader.JumpPressed)
         {
-            velocity.y = jumpForce;
+            _velocity.y = jumpForce;
         }
     }
 
@@ -78,13 +78,13 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void ApplyGravity()
     {
-        if (controller.isGrounded)
+        if (_controller.isGrounded)
         {
-            velocity.y = -1f;
+            _velocity.y = -1f;
         }
         else
         {
-            velocity.y += gravityForce * Time.deltaTime;
+            _velocity.y += gravityForce * Time.deltaTime;
         }
     }
 
