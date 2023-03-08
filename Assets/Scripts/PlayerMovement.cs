@@ -19,11 +19,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Helpers")]
     [SerializeField] private CharacterController _controller;
     [SerializeField] private PlayerInput _playerInput;
-    [SerializeField] private SurfaceSlider _slider;
 
     private PlayerReader _playerReader;
+    private float _ySpeed;
     private Vector3 _velocity;
-    private Vector3 _slopeVelocity;
     private Vector3 _moveDirection;
 
     private void Awake()
@@ -35,14 +34,28 @@ public class PlayerMovement : MonoBehaviour
     {
         _playerReader.ReadInputs();
         ApplyCameraAngles();
-        ApplyGravity();
-        ApplyJump();
+        ApplyGravityAndJump();
         ApplyMove();
 
-        Vector3 moveAlongSurface = _slider.Project(_moveDirection);
-        _controller.Move(speed * Time.deltaTime * moveAlongSurface +
-                        _velocity * Time.deltaTime);
+        _velocity = AdjustVelocity(_moveDirection.magnitude * speed * _moveDirection.normalized);
+        _velocity.y += _ySpeed;
+        _controller.Move(_velocity * Time.deltaTime);
+    }
 
+    private Vector3 AdjustVelocity(Vector3 velocity)
+    {
+        Ray ray = new(transform.position, Vector3.down);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, _controller.height))
+        {
+            Quaternion slopeRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            Vector3 adjusted = slopeRotation * velocity;
+            if (adjusted.y < 0)
+            {
+                return adjusted;
+            }
+        }
+        return velocity;
     }
    
 
@@ -55,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _moveDirection = transform.right * _playerReader.Direction.x +
                             transform.forward * _playerReader.Direction.z;
+            _moveDirection.Normalize();
         }
         else
         {
@@ -63,28 +77,25 @@ public class PlayerMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Изменяет velocity.y для осуществления прыжка
+    /// Изменяет velocity.y, применяя к ней гравитационные силы, также
+    /// обрабатывает прыжок
     /// </summary>
-    private void ApplyJump()
-    {
-        if (_controller.isGrounded && _playerReader.JumpPressed)
-        {
-            _velocity.y = jumpForce;
-        }
-    }
-
-    /// <summary>
-    /// Изменяет velocity.y, применяя к ней гравитационные силы
-    /// </summary>
-    private void ApplyGravity()
+    private void ApplyGravityAndJump()
     {
         if (_controller.isGrounded)
         {
-            _velocity.y = -1f;
+            if (_playerReader.JumpPressed)
+            {
+                _ySpeed = jumpForce;
+            }
+            else
+            {
+                _ySpeed = -1f;
+            }
         }
         else
         {
-            _velocity.y += gravityForce * Time.deltaTime;
+            _ySpeed += gravityForce * Time.deltaTime;
         }
     }
 
