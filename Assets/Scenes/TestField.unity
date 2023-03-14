@@ -1723,6 +1723,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4149084061887519733, guid: 67b327773b833074b81de9bffc5e6aa7, type: 3}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4149084061887519741, guid: 67b327773b833074b81de9bffc5e6aa7, type: 3}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4149084061887519742, guid: 67b327773b833074b81de9bffc5e6aa7, type: 3}
       propertyPath: cam
       value: 
