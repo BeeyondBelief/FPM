@@ -7,10 +7,11 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement")]
     public Transform cam;
+    public float crouchSpeed = 3f;
     public float speed = 7f;
+    public float runSpeed = 15f;
 
     [Header("Jumping")]
-    public float jumpCooldown;
     public float jumpForce;
 
     [Header("Gravity")]
@@ -22,12 +23,16 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerReader _playerReader;
     private float _ySpeed;
-    private Vector3 _velocity;
-    private Vector3 _moveDirection;
+    private float _currentSpeed;
+    private float _characterNormalHeight;
+    private Vector3 _characterCenter;
 
     private void Awake()
     {
         _playerReader = new PlayerReader(_playerInput);
+        _characterNormalHeight = _controller.height;
+        _characterCenter = _controller.center;
+        _currentSpeed = speed;
     }
 
     private void Update()
@@ -35,11 +40,47 @@ public class PlayerMovement : MonoBehaviour
         _playerReader.ReadInputs();
         ApplyCameraAngles();
         ApplyGravityAndJump();
-        ApplyMove();
+        HandleCrouching();
+        UpdateSpeed();
+        
+        var moveDirection = GetMovementDirection();
+        var velocity = AdjustVelocity(moveDirection.magnitude * _currentSpeed * moveDirection.normalized);
+        velocity.y += _ySpeed;
+        _controller.Move(velocity * Time.deltaTime);
+    }
 
-        _velocity = AdjustVelocity(_moveDirection.magnitude * speed * _moveDirection.normalized);
-        _velocity.y += _ySpeed;
-        _controller.Move(_velocity * Time.deltaTime);
+    private void HandleCrouching()
+    {
+        if (!_playerReader.CrouchPressed)
+        {
+            _controller.height = _characterNormalHeight;
+            _controller.center = _characterCenter;
+        }
+        else
+        {
+            _controller.height = _characterNormalHeight / 2;
+            _controller.center = new Vector3(_characterCenter.x, _characterCenter.y / 2, _characterCenter.z);
+        }
+    }
+
+    private void UpdateSpeed()
+    {
+        if (!_controller.isGrounded)
+        {
+            return;
+        }
+        if (_playerReader.RunPressed)
+        {
+            _currentSpeed = runSpeed;
+        }
+        else if (_playerReader.CrouchPressed)
+        {
+            _currentSpeed = crouchSpeed;
+        }
+        else
+        {
+            _currentSpeed = speed;   
+        }
     }
 
     private Vector3 AdjustVelocity(Vector3 velocity)
@@ -60,42 +101,37 @@ public class PlayerMovement : MonoBehaviour
    
 
     /// <summary>
-    /// Изменяет moveDirection в соответсвии с желаемым направлением движения
+    /// Возвращает вектор направления движения
     /// </summary>
-    private void ApplyMove()
+    private Vector3 GetMovementDirection()
     {
-        if (_playerReader.Direction.magnitude > 0.1f)
+        if (_playerReader.Direction.magnitude < _controller.minMoveDistance)
         {
-            _moveDirection = transform.right * _playerReader.Direction.x +
-                            transform.forward * _playerReader.Direction.z;
-            _moveDirection.Normalize();
+            return Vector3.zero;
         }
-        else
-        {
-            _moveDirection = Vector3.zero;
-        }
+        var moveDirection = transform.right * _playerReader.Direction.x +
+                                  transform.forward * _playerReader.Direction.z;
+        moveDirection.Normalize();
+        return moveDirection;
     }
 
     /// <summary>
-    /// Изменяет velocity.y, применяя к ней гравитационные силы, также
-    /// обрабатывает прыжок
+    /// Изменяет вертикальную скорость в зависимости от гравитации и прыжка.
     /// </summary>
     private void ApplyGravityAndJump()
     {
-        if (_controller.isGrounded)
+        if (!_controller.isGrounded)
         {
-            if (_playerReader.JumpPressed)
-            {
-                _ySpeed = jumpForce;
-            }
-            else
-            {
-                _ySpeed = -1f;
-            }
+            _ySpeed += gravityForce * Time.deltaTime;
+            return;
+        }
+        if (_playerReader.JumpPressed)
+        {
+            _ySpeed = jumpForce;
         }
         else
         {
-            _ySpeed += gravityForce * Time.deltaTime;
+            _ySpeed = -1f;
         }
     }
 
