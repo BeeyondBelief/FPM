@@ -1,38 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 
 public class PlayerReader
-{
-    private PlayerInput inp;
-
-    private Vector2 directionFlat;
+{ 
+    private readonly PlayerInput _inp;
+    private Vector2 _directionFlat;
+    
     public Vector3 Direction { get; private set; }
     public bool JumpPressed { get; private set; }
+    public bool CrouchPressed { get; private set; }
+    public bool RunPressed { get; private set; }
 
     public PlayerReader(PlayerInput inp)
     {
-        this.inp = inp;
+        _inp = inp;
+        JumpPressed = false;
+        CrouchPressed = false;
+        RunPressed = false;
     }
 
-    public Vector3 ReadDirection()
+    private void ReadDirection()
     {
-        directionFlat = inp.actions["Move"].ReadValue<Vector2>();
-        Direction = new Vector3(directionFlat.x, 0f, directionFlat.y).normalized;
-        return Direction;
+        _directionFlat = _inp.actions["Move"].ReadValue<Vector2>();
+        Direction = new Vector3(_directionFlat.x, 0f, _directionFlat.y).normalized;
+    }
+    
+    private void ReadJump()
+    {
+        JumpPressed = _inp.actions["Jump"].IsPressed();
     }
 
-    public bool ReadJump()
+    private void ReadCrouch()
     {
-        JumpPressed = inp.actions["Jump"].IsPressed();
-        return JumpPressed;
+        CrouchPressed = _inp.actions["Crouch"].IsPressed();
+    }
+
+    private void ReadRun()
+    {
+        RunPressed = _inp.actions["Run"].IsPressed();
     }
 
     public void ReadInputs()
     {
         ReadDirection();
         ReadJump();
+        ReadCrouch();
+        ReadRun();
     }
 }
