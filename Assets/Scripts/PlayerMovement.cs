@@ -17,6 +17,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Gravity")]
     public float gravityForce = -9.81f;
 
+    [Header("Physics")] 
+    [SerializeField] private float _playerMass = 50f;
+
     [Header("Helpers")]
     [SerializeField] private CharacterController _controller;
     [SerializeField] private PlayerInput _playerInput;
@@ -26,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     private float _currentSpeed;
     private float _characterNormalHeight;
     private Vector3 _characterCenter;
+    private Vector3 _velocity;
 
     private void Awake()
     {
@@ -33,6 +37,19 @@ public class PlayerMovement : MonoBehaviour
         _characterNormalHeight = _controller.height;
         _characterCenter = _controller.center;
         _currentSpeed = speed;
+    }
+    
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        var body = hit.collider.attachedRigidbody;
+        if (body == null || body.isKinematic)
+            return;
+
+        // Не применять силу к объектам на которых стоим
+        if (hit.moveDirection.y < -0.3f)
+            return;
+        //Adds force to the object
+        body.AddForce(_velocity * _playerMass * Time.deltaTime, ForceMode.Impulse);
     }
 
     private void Update()
@@ -44,9 +61,9 @@ public class PlayerMovement : MonoBehaviour
         UpdateSpeed();
         
         var moveDirection = GetMovementDirection();
-        var velocity = AdjustVelocity(moveDirection.magnitude * _currentSpeed * moveDirection.normalized);
-        velocity.y += _ySpeed;
-        _controller.Move(velocity * Time.deltaTime);
+        _velocity = AdjustVelocity(moveDirection.magnitude * _currentSpeed * moveDirection.normalized);
+        _velocity.y += _ySpeed;
+        _controller.Move(_velocity * Time.deltaTime);
     }
 
     private void HandleCrouching()
