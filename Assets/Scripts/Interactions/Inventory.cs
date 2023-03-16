@@ -7,26 +7,28 @@ namespace Interactions
 {
     public class Inventory : MonoBehaviour
     {
-        [SerializeField] private PlayerInput _input;
-        [SerializeField] private Camera _camera;
-        [SerializeField] private PopUp _popUp = null;
-        [SerializeField] private float pickDistance = 10f;
-
+        public float pickDistance = 10f;
         [SerializeField] private List<Item> _inventory = new();
 
         private PlayerReader _reader;
+        private PopUp _popUp;
+        private Camera _camera;
 
         private void Awake()
         {
-            _reader = new PlayerReader(_input);
+            var input = FindObjectOfType<PlayerInput>();
+            if (input is not null)
+            {
+                _reader = new PlayerReader(input);
+            }
+            _popUp = FindObjectOfType<PopUp>();
+            _camera = FindObjectOfType<Camera>();
         }
 
         private void Update()
         {
-            if (!_reader.MouseClicked)
-            {
-                return;
-            }
+            if (_reader is null || !_reader.MouseClicked || _camera is null) return;
+            
             var pos = _reader.MousePos;
             var ray = _camera.ScreenPointToRay(pos);
             if (Physics.Raycast(ray, out var hit, pickDistance))
@@ -38,12 +40,16 @@ namespace Interactions
                 }
                 AddItem(collectable.Collect());
             }
-            
         }
 
         public void AddItem(Item item)
         {
             _inventory.Add(item);
+            ShowPopUp(item);
+        }
+
+        private void ShowPopUp(Item item)
+        {
             if (_popUp is not null && item.type == ItemType.KeyItem)
             {
                 _popUp.Show(item.whenFound);
