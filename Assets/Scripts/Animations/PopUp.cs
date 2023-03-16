@@ -12,7 +12,6 @@ namespace Animations
         [SerializeField] private TMP_Text _mesh;
 
         private Queue<string> _queue = new();
-        private bool _animating;
         private AnimatorStateInfo _info;
 
         private void Awake()
