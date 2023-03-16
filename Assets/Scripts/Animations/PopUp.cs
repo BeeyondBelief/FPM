@@ -9,7 +9,7 @@ namespace Animations
     public class PopUp: MonoBehaviour
     {
         [SerializeField] private Animator _animator;
-        [SerializeField] private TextMeshProUGUI _mesh;
+        [SerializeField] private TMP_Text _mesh;
 
         private Queue<string> _queue = new();
         private bool _animating;
