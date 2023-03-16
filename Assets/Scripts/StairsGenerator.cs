@@ -68,7 +68,7 @@ public class StairsGenerator : MonoBehaviour
         
         for (int i = 0; i < stairsCount; i++)
         {
-            Instantiate(stairPrefab, new Vector3(parentPosition.x,  parentPosition.y + i*0.5f, parentPosition.z + i*0.5f), Quaternion.Euler(0, 0, 0), stairsStorage);
+            Instantiate(stairPrefab, new Vector3(parentPosition.x,  parentPosition.y + i*stairPrefab.transform.localScale.y*0.5f*transform.localScale.y, parentPosition.z + i*stairPrefab.transform.localScale.z*0.5f*transform.localScale.z), Quaternion.Euler(0, 0, 0), stairsStorage);
         }
 
         _stairsCountOld = stairsCount;
