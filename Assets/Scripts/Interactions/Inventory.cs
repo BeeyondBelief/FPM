@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,8 +7,9 @@ namespace Interactions
 {
     public class Inventory : MonoBehaviour
     {
-        [SerializeField] private PlayerInput input;
+        [SerializeField] private PlayerInput _input;
         [SerializeField] private Camera _camera;
+        [SerializeField] private PopUp _popUp = null;
         [SerializeField] private float pickDistance = 10f;
 
         [SerializeField] private List<Item> _inventory = new();
@@ -17,7 +18,7 @@ namespace Interactions
 
         private void Awake()
         {
-            _reader = new PlayerReader(input);
+            _reader = new PlayerReader(_input);
         }
 
         private void Update()
@@ -43,6 +44,10 @@ namespace Interactions
         public void AddItem(Item item)
         {
             _inventory.Add(item);
+            if (_popUp is not null && item.type == ItemType.KeyItem)
+            {
+                _popUp.Show(item.whenFound);
+            }
         }
     }
 }
