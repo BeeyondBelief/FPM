@@ -10,10 +10,15 @@ namespace Animations
     {
         [SerializeField] private Animator _animator;
         [SerializeField] private TextMeshProUGUI _mesh;
-        [SerializeField] private float _showTime = 1f;
 
         private Queue<string> _queue = new();
         private bool _animating;
+        private AnimatorStateInfo _info;
+
+        private void Awake()
+        {
+            _info = _animator.GetCurrentAnimatorStateInfo(0);
+        }
 
         public void Show(string popUpText)
         {
@@ -22,21 +27,13 @@ namespace Animations
 
         public void FixedUpdate()
         {
-            if (_animating) return;
+            if (!_info.IsName("Closed")) return;
             
             while (_queue.Count != 0)
             {
-                _animating = true;
                 _mesh.text = _queue.Dequeue();
-                _animator.SetTrigger("Open");
-                Invoke(nameof(Hide), _showTime);
+                _animator.SetTrigger("Trigger");
             }
-        }
-
-        private void Hide()
-        {
-            _animator.SetTrigger("Close");
-            _animating = false;
         }
     }
 }
