@@ -11,6 +11,9 @@ public class PlayerReader
     public bool JumpPressed { get; private set; }
     public bool CrouchPressed { get; private set; }
     public bool RunPressed { get; private set; }
+    public bool MouseClicked => _inp.actions["MouseClick"].IsPressed();
+    public Vector2 MousePos => _inp.actions["MousePos"].ReadValue<Vector2>();
+
 
     public PlayerReader(PlayerInput inp)
     {
