@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6690114196930580647}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -343,6 +343,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 70514d15-d1ce-4991-97b9-7f01c481670b
     m_ActionName: Player/Run[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 36b577bb-5d25-48ee-87ec-ec70f83bffbc
+    m_ActionName: Player/MouseClick[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 70b3d189-347c-44d1-b4e9-7e5154955f0e
+    m_ActionName: Player/MousePos[/Mouse/position]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
