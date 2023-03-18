@@ -1,24 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 //https://www.red-gate.com/simple-talk/development/dotnet-development/pathfinding-unity-c/
 
 public class PathFinding : MonoBehaviour
 {
-    public bool visualLog = false;
-    public TextMeshProUGUI text;
-    
+    public Transform pointsStorageToPatrol;
     public Transform targetToCatch;
     public float fieldOfView = 90;
     public float maxRange = 35;
-    public Transform pointsStorage;
-    //public Transform[] points;
+    
+    public UnityEvent onTargetCatched;
+    
+    [Header("Debug")]
+    public bool debug = false;
+    public TextMeshProUGUI text;
+    public Transform goesToThatPosition;
+    
     private NavMeshAgent nav;
     private int destPoint;
     
@@ -31,12 +38,21 @@ public class PathFinding : MonoBehaviour
     //установить следующую точку как цель
     void GoToNextPoint()
     {
-        if (pointsStorage.childCount == 0)
+        if (pointsStorageToPatrol.childCount == 0)
         {
             return;
         }
-        nav.destination = pointsStorage.GetChild(destPoint).position;
-        destPoint = (destPoint + 1) % pointsStorage.childCount;
+        nav.destination = pointsStorageToPatrol.GetChild(destPoint).position;
+        
+        if (debug)
+            goesToThatPosition.position = nav.destination;
+        
+        destPoint = (destPoint + 1) % pointsStorageToPatrol.childCount;
+    }
+
+    public void RestartFirstLevel()
+    {
+        SceneManager.LoadScene("FirstLevel");
     }
     
     void FixedUpdate()
@@ -44,16 +60,19 @@ public class PathFinding : MonoBehaviour
         //расстояние до игрока
         var heading = targetToCatch.position - this.transform.position;
         if (heading.sqrMagnitude < maxRange * maxRange) { //если до игрока достаточно малое расстояние
-            if(visualLog)
+            if(debug)
                 text.text = "Вы замечены";
             // Target is within range.
             nav.destination = targetToCatch.position; //установка цели для преследования
-
+            if (debug)
+                goesToThatPosition.position = nav.destination;
+            
             if (!nav.pathPending && nav.remainingDistance < 1.5f) //если игрок суперблизко
             {
                 //игрок пойман
-                Debug.Log("player catched");
-                SceneManager.LoadScene("FirstLevel");
+                if(debug)
+                    Debug.Log("player catched");
+                onTargetCatched?.Invoke();
             }
             
             return;
@@ -65,9 +84,4 @@ public class PathFinding : MonoBehaviour
             GoToNextPoint();
     }
     
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
