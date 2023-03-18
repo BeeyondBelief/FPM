@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //https://www.red-gate.com/simple-talk/development/dotnet-development/pathfinding-unity-c/
 
 public class PathFinding : MonoBehaviour
 {
+    public bool visualLog = false;
+    public TextMeshProUGUI text;
+    
     public Transform targetToCatch;
     public float fieldOfView = 90;
     public float maxRange = 35;
@@ -39,6 +44,8 @@ public class PathFinding : MonoBehaviour
         //расстояние до игрока
         var heading = targetToCatch.position - this.transform.position;
         if (heading.sqrMagnitude < maxRange * maxRange) { //если до игрока достаточно малое расстояние
+            if(visualLog)
+                text.text = "Вы замечены";
             // Target is within range.
             nav.destination = targetToCatch.position; //установка цели для преследования
 
@@ -52,6 +59,7 @@ public class PathFinding : MonoBehaviour
             return;
         }
         
+        text.text = "";
         //до сюда доходит когда игрока рядом нет
         if (!nav.pathPending && nav.remainingDistance < 0.5f) //если суперблизко к точке патрулирования
             GoToNextPoint();
