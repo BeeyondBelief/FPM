@@ -30,7 +30,7 @@ namespace Guard
 
         public void RestartThisLevel()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         /// <summary>
