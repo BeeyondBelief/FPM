@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3106852030520218955}
   - component: {fileID: 3106852030520218805}
-  - component: {fileID: 3106852030520218804}
+  - component: {fileID: 2027070386563360971}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -56,7 +56,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3106852030520218804
+--- !u!114 &2027070386563360971
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,10 +68,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002bc9270cd56d648a97a657e679ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointsStorageToPatrol: {fileID: 0}
   targetToCatch: {fileID: 0}
   fieldOfView: 90
   maxRange: 35
-  pointsStorage: {fileID: 0}
+  nav: {fileID: 3106852030520218805}
+  onTargetCatched:
+    m_PersistentCalls:
+      m_Calls: []
+  debug: 0
+  text: {fileID: 0}
+  goesToThatPosition: {fileID: 0}
 --- !u!1 &3106852030752063632
 GameObject:
   m_ObjectHideFlags: 0
