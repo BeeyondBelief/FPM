@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -10,83 +13,72 @@ using UnityEngine.SceneManagement;
 
 public class GuardMovement : MonoBehaviour
 {
-    //сюда просто обьекты добавить, и он будет патрулировать их
-    public Transform pointsStorageToPatrol;
-    //кого ловить
-    public Transform targetToCatch;
-    //пока что не ворк
-    public float fieldOfView = 90;
-    //как близко игрок должен находиться, чтоб увидеть его
-    public float maxRange = 35;
-    //навигация AI
+    [Tooltip("Объекты патрулирования.")]
+    public Transform travelRoute;
+    [Tooltip("Дистанция, при которой засчитывается достижение цели.")]
+    public float travelReachedDistance = 0.5f;
+    
+    [Tooltip("Объект преследования.")]
+    public Transform catchTarget;
+
+    [Tooltip("Если объекты преследования находятся в радиусе поиска, они становятся целью.")]
+    public float searchRange = 15f;
+
+    [Tooltip("Навигатор")]
     public NavMeshAgent nav;
     
-    //вызывается когда игрок суперблизко к охраннику
-    public UnityEvent onTargetCatched;
+    [Tooltip("Дистанция срабатывания захвата объекта.")]
+    public float catchDistance = 1.5f;
     
-    [Header("Debug")]
-    //выводить на экран если видит, ставить метку куда идет
-    public bool debug;
-    //текст на экран, мол найден охранником
-    public TextMeshProUGUI text;
-    //телепортирует этот обьект туда, куда идет
-    public Transform goesToThatPosition;
+    [Tooltip("Событие, срабатывает если объект схвачен.")]
+    public UnityEvent onTargetCaught;
     
-    //номер обьекта, к которому идет
-    private int _destPoint;
+    private int _destinationPoint;
+    public bool Chaising { get; private set; }
+    
+    public void RestartThisLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
     /// <summary>
-    /// установить следующую точку как цель
+    /// Установить следующую точку как цель
     /// </summary>
-    void GoToNextPoint()
+    private void SetNextPoint()
     {
-        if (pointsStorageToPatrol.childCount == 0)
+        if (travelRoute.childCount == 0)
         {
             return;
         }
-        nav.destination = pointsStorageToPatrol.GetChild(_destPoint).position;
-        
-        if (debug)
-            goesToThatPosition.position = nav.destination;
-        
-        _destPoint = (_destPoint + 1) % pointsStorageToPatrol.childCount;
+        nav.destination = travelRoute.GetChild(_destinationPoint).position;
+        _destinationPoint = (_destinationPoint + 1) % travelRoute.childCount;
     }
 
-    public void RestartFirstLevel()
+    private void FixedUpdate()
     {
-        SceneManager.LoadScene("FirstLevel");
-    }
-    
-    void FixedUpdate()
-    {
-        //расстояние до игрока
-        var vectorToPlayer = targetToCatch.position - this.transform.position;
-        if (vectorToPlayer.sqrMagnitude < maxRange * maxRange) { //если до игрока достаточно малое расстояние
-            
-            nav.destination = targetToCatch.position; //установка цели для преследования
-
-            if (debug)
-            {
-                text.text = "Вы замечены";
-                goesToThatPosition.position = nav.destination;
-            }
-
-            if (!nav.pathPending && nav.remainingDistance < 1.5f) //если игрок суперблизко
-            {
-                //игрок пойман
-                if(debug)
-                    Debug.Log("player catched");
-                onTargetCatched?.Invoke();
-            }
-            
+        var vectorToPlayer = catchTarget.position - transform.position;
+        if (vectorToPlayer.magnitude > searchRange) {
+            Chaising = false;
+            if (!nav.pathPending && nav.remainingDistance < travelReachedDistance)
+                SetNextPoint();
             return;
         }
-        
-        //до сюда доходит когда игрок не замечен
-        text.text = "";
-        
-        if (!nav.pathPending && nav.remainingDistance < 0.5f) //если суперблизко к точке патрулирования
-            GoToNextPoint();
+        Chaising = true;
+        nav.destination = catchTarget.position;
+        if (!nav.pathPending && nav.remainingDistance < catchDistance)
+        {
+            onTargetCaught?.Invoke();
+            nav.destination = transform.position;
+        }
     }
-    
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, searchRange);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, catchDistance);
+        if (!Chaising)
+            Gizmos.DrawLine(transform.position, nav.destination);
+    }
 }
