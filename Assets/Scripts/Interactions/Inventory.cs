@@ -2,6 +2,7 @@
 using Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Player;
 
 namespace Interactions
 {
