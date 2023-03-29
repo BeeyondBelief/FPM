@@ -52,6 +52,11 @@ namespace Interactions
             ShowPopUp(item);
         }
 
+        public Item[] GetItems()
+        {
+            return _inventory.ToArray();
+        }
+
         private void ShowPopUp(Item item)
         {
             if (_popUp is not null && item.type == ItemType.KeyItem)
