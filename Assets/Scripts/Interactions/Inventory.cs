@@ -2,6 +2,7 @@
 using Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Player;
 
 namespace Interactions
 {
@@ -49,6 +50,11 @@ namespace Interactions
         {
             _inventory.Add(item);
             ShowPopUp(item);
+        }
+
+        public Item[] GetItems()
+        {
+            return _inventory.ToArray();
         }
 
         private void ShowPopUp(Item item)
