@@ -21,6 +21,8 @@ namespace Level
             {
                 if (item.type == ItemType.KeyItem)
                 {
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
                     SceneManager.LoadScene(0);
                 }
             }
