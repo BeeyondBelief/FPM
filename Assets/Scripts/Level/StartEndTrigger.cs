@@ -21,7 +21,7 @@ namespace Level
             {
                 if (item.type == ItemType.KeyItem)
                 {
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                    SceneManager.LoadScene(0);
                 }
             }
         }
