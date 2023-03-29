@@ -39,6 +39,7 @@ namespace Player
             _characterNormalHeight = _controller.height;
             _characterCenter = _controller.center;
             _currentSpeed = speed;
+            OnApplicationFocus(true);
         }
         
         private void OnControllerColliderHit(ControllerColliderHit hit)
