@@ -3,13 +3,13 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace UI
+namespace Menu
 {
     public class LevelSelector : MonoBehaviour
     {
         public SceneAsset scene;
         public TMP_Text textMesh;
-        void Awake()
+        private void Awake()
         {
             textMesh.text = scene.name;
         }
