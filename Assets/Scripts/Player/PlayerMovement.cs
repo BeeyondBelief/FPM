@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 
@@ -39,7 +40,7 @@ namespace Player
             _characterNormalHeight = _controller.height;
             _characterCenter = _controller.center;
             _currentSpeed = speed;
-            OnApplicationFocus(true);
+            OnApplicationFocus(false);
         }
         
         private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -160,6 +161,7 @@ namespace Player
         /// </summary>
         private void OnApplicationFocus(bool hasFocus)
         {
+            if(EventSystem.current.IsPointerOverGameObject()) { return;}
             if (hasFocus)
             {
                 Cursor.visible = false;
