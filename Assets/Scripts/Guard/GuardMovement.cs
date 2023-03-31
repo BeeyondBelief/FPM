@@ -22,12 +22,19 @@ namespace Guard
 
         [Tooltip("Дистанция срабатывания захвата объекта.")]
         public float catchDistance = 1.5f;
-
+        
+        [Tooltip("Экран при проигрыше")]
+        public GameObject DeathScreen;
+        
         [Tooltip("Событие, срабатывает если объект схвачен.")]
         public UnityEvent onTargetCaught;
-
+        
         public bool Chasing { get; private set; }
 
+        public void ShowDeathScreen()
+        {
+            DeathScreen.SetActive(true);
+        }
         public void RestartThisLevel()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
