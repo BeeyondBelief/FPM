@@ -1,11 +1,13 @@
 using Interactions;
 using UnityEngine;
+using UnityEngine.InputSystem.OnScreen;
 using UnityEngine.SceneManagement;
 
 namespace Level
 {
     public class StartEndTrigger : MonoBehaviour
     {
+        public GameObject WinScreen;
         [SerializeField] private Collider _collider;
 
         #nullable enable
@@ -23,7 +25,8 @@ namespace Level
                 {
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
-                    SceneManager.LoadScene(0);
+                    
+                    WinScreen.SetActive(true);
                 }
             }
         }

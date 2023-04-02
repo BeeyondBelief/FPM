@@ -26,10 +26,11 @@ namespace Player
         [Header("Helpers")]
         [SerializeField] private CharacterController _controller;
         [SerializeField] private PlayerInput _playerInput;
-
+    
         private PlayerReader _playerReader;
         private float _ySpeed;
         private float _currentSpeed;
+        private float _prevspeed;
         private float _characterNormalHeight;
         private Vector3 _characterCenter;
         private Vector3 _velocity;
@@ -161,7 +162,6 @@ namespace Player
         /// </summary>
         private void OnApplicationFocus(bool hasFocus)
         {
-            if(EventSystem.current.IsPointerOverGameObject()) { return;}
             if (hasFocus)
             {
                 Cursor.visible = false;
@@ -172,6 +172,16 @@ namespace Player
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
             }
+        }
+        public void Pause()
+        {
+            _prevspeed = speed;
+            speed = 0f;
+        }
+
+        public void Unpause()
+        {
+            speed = _prevspeed;
         }
         
         /// <summary>
