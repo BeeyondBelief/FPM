@@ -14,7 +14,7 @@ namespace Player
         public float runSpeed = 15f;
 
         [Header("Jumping")]
-        public float jumpForce;
+        public float jumpForce = 7f;
 
         [Header("Gravity")]
         public float gravityForce = -9.81f;
@@ -35,6 +35,8 @@ namespace Player
 
         private void Awake()
         {
+            GameSettings.onGamePaused += OnGamePause;
+            GameSettings.onGameResumed += OnGameResumed;
             _playerReader = new PlayerReader(_playerInput);
             _characterNormalHeight = _controller.height;
             _characterCenter = _controller.center;
@@ -52,6 +54,16 @@ namespace Player
                 return;
             //Adds force to the object
             body.AddForce(_velocity * _playerMass * Time.deltaTime, ForceMode.Impulse);
+        }
+
+        private void OnGamePause()
+        {
+            gameObject.SetActive(false);
+        }
+
+        private void OnGameResumed()
+        {
+            gameObject.SetActive(true);
         }
 
         private void Update()
