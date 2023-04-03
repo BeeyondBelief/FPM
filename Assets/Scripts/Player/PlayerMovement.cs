@@ -173,16 +173,6 @@ namespace Player
                 Cursor.lockState = CursorLockMode.None;
             }
         }
-        public void Pause()
-        {
-            _prevspeed = speed;
-            speed = 0f;
-        }
-
-        public void Unpause()
-        {
-            speed = _prevspeed;
-        }
         
         /// <summary>
         /// Обновляет направление движения в зависимости от направления камеры

@@ -1,15 +1,16 @@
 using Interactions;
 using UnityEngine;
-using UnityEngine.InputSystem.OnScreen;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace Level
 {
     public class StartEndTrigger : MonoBehaviour
     {
-        public GameObject WinScreen;
         [SerializeField] private Collider _collider;
-
+        
+        [Tooltip("Событие, срабатывает если взят ключевой предмет.")]
+        public UnityEvent onPointEnter;
         #nullable enable
         private void OnTriggerEnter(Collider other)
         {
@@ -26,7 +27,7 @@ namespace Level
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
                     
-                    WinScreen.SetActive(true);
+                    onPointEnter?.Invoke();
                 }
             }
         }

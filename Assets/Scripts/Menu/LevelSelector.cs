@@ -11,6 +11,7 @@ namespace Menu
         public TMP_Text textMesh;
         private void Awake()
         {
+            if (textMesh is null) {return;}
             textMesh.text = scene.name;
         }
         public void Select()
