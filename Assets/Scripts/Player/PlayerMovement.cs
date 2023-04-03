@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Game;
@@ -9,7 +10,7 @@ namespace Player
     {
 
         [Header("Movement")]
-        public Transform cam;
+        public CinemachineBrain cam;
         public float crouchSpeed = 3f;
         public float speed = 7f;
         public float runSpeed = 15f;
@@ -172,7 +173,7 @@ namespace Player
         /// </summary>
         private void ApplyCameraAngles()
         {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, cam.eulerAngles.y, transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, cam.transform.eulerAngles.y, transform.eulerAngles.z);
         }
     }
 }
