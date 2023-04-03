@@ -39,7 +39,6 @@ namespace Player
             _characterNormalHeight = _controller.height;
             _characterCenter = _controller.center;
             _currentSpeed = speed;
-            OnApplicationFocus(true);
         }
         
         private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -154,24 +153,7 @@ namespace Player
                 _ySpeed = -1f;
             }
         }
-        
-        /// <summary>
-        /// юнити событие. поведение курсора при смене фокуса.
-        /// </summary>
-        private void OnApplicationFocus(bool hasFocus)
-        {
-            if (hasFocus)
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            else
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
-        }
-        
+
         /// <summary>
         /// Обновляет направление движения в зависимости от направления камеры
         /// </summary>
