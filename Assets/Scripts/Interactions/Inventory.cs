@@ -18,6 +18,13 @@ namespace Interactions
         
         private PlayerReader? _reader;
         
+        
+        private void OnValidate()
+        {
+            _popUp = FindObjectOfType<PopUp>();
+            _camera = FindObjectOfType<Camera>();
+        }
+        
         private void Awake()
         {
             // Если так не сделать, то камера при проверках _camera is null, будет давать
