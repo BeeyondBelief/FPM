@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Game;
+using UnityEditor;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 namespace Menu
 {
@@ -14,6 +17,19 @@ namespace Menu
         {
             GameSettings.onGamePaused += Pause;
             GameSettings.onGameResumed += Resume;
+        }
+
+        private void OnValidate()
+        {
+            if (FindObjectOfType<EventSystem>() is null)
+            {
+                EditorApplication.delayCall += () =>
+                {
+                    var eventSystemObject = new GameObject("EventSystem");
+                    eventSystemObject.AddComponent<EventSystem>();
+                    eventSystemObject.AddComponent<InputSystemUIInputModule>();
+                };
+            }
         }
 
         private void OnDestroy()
