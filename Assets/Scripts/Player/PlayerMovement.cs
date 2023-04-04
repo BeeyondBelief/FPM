@@ -1,5 +1,8 @@
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Game;
+using UnityEditor;
 
 
 namespace Player
@@ -8,13 +11,13 @@ namespace Player
     {
 
         [Header("Movement")]
-        public Transform cam;
+        public CinemachineBrain cam;
         public float crouchSpeed = 3f;
         public float speed = 7f;
         public float runSpeed = 15f;
 
         [Header("Jumping")]
-        public float jumpForce;
+        public float jumpForce = 7f;
 
         [Header("Gravity")]
         public float gravityForce = -9.81f;
@@ -32,14 +35,35 @@ namespace Player
         private float _characterNormalHeight;
         private Vector3 _characterCenter;
         private Vector3 _velocity;
+        
+        private void OnValidate()
+        {
+            var foundCamera = FindObjectOfType<Camera>();
+            if (foundCamera is null)
+            {
+                EditorApplication.delayCall += () =>
+                {
+                    var cameraObject = new GameObject("CameraRoot");
+                    cameraObject.AddComponent<Camera>();
+                    cameraObject.AddComponent<AudioListener>();
+                    cameraObject.AddComponent<CinemachineBrain>();
+                    cam = cameraObject.GetComponent<CinemachineBrain>();
+                };
+            }
+            else
+            {
+                cam = foundCamera.GetComponent<CinemachineBrain>();
+            }
+        }
 
         private void Awake()
         {
+            GameSettings.onGamePaused += OnGamePause;
+            GameSettings.onGameResumed += OnGameResumed;
             _playerReader = new PlayerReader(_playerInput);
             _characterNormalHeight = _controller.height;
             _characterCenter = _controller.center;
             _currentSpeed = speed;
-            OnApplicationFocus(true);
         }
         
         private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -53,6 +77,18 @@ namespace Player
                 return;
             //Adds force to the object
             body.AddForce(_velocity * _playerMass * Time.deltaTime, ForceMode.Impulse);
+        }
+
+        private void OnGamePause()
+        {
+            gameObject.SetActive(false);
+            cam.enabled = false;
+        }
+
+        private void OnGameResumed()
+        {
+            gameObject.SetActive(true);
+            cam.enabled = true;
         }
 
         private void Update()
@@ -154,30 +190,13 @@ namespace Player
                 _ySpeed = -1f;
             }
         }
-        
-        /// <summary>
-        /// юнити событие. поведение курсора при смене фокуса.
-        /// </summary>
-        private void OnApplicationFocus(bool hasFocus)
-        {
-            if (hasFocus)
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            else
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
-        }
-        
+
         /// <summary>
         /// Обновляет направление движения в зависимости от направления камеры
         /// </summary>
         private void ApplyCameraAngles()
         {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, cam.eulerAngles.y, transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, cam.transform.eulerAngles.y, transform.eulerAngles.z);
         }
     }
 }
