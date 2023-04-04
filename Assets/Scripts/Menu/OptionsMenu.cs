@@ -2,7 +2,7 @@
 
 namespace Menu
 {
-    public class OptionsMenu: MonoBehaviour
+    public class OptionsMenu: MenuSection
     {
         public static float VolumeLevel { get; private set; }
         public static bool ToggleButtonsEnabled { get; private set; }

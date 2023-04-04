@@ -3,7 +3,8 @@ using UnityEngine.SceneManagement;
 
 namespace Menu
 {
-    public class MainMenu : MonoBehaviour
+    public class MainMenu : MenuSection
+    
     {
         public void PlayGame()
         {
