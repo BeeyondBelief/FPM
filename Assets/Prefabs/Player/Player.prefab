@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 6690114198418297913}
   - component: {fileID: 6690114198418297912}
   - component: {fileID: 6690114198418297914}
+  - component: {fileID: 4520045141954677245}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -351,6 +352,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 70b3d189-347c-44d1-b4e9-7e5154955f0e
     m_ActionName: Player/MousePos[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c237eae2-6720-46f0-8b2e-e5d83075d042
+    m_ActionName: Game/PauseGame[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -374,6 +379,23 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4520045141954677245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6690114198418297860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f75ed98426ea4331b3a1156b58dd583f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _input: {fileID: 6690114198418297912}
+  _popUp: {fileID: 0}
+  _camera: {fileID: 0}
+  pickDistance: 10
+  _inventory: []
 --- !u!1 &6690114198429831981
 GameObject:
   m_ObjectHideFlags: 0
