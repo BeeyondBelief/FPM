@@ -395,7 +395,7 @@ GameObject:
   - component: {fileID: 850917118039029781}
   - component: {fileID: 850917118039029770}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Joystics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
