@@ -61,11 +61,13 @@ namespace Player
         private void OnGamePause()
         {
             gameObject.SetActive(false);
+            cam.enabled = false;
         }
 
         private void OnGameResumed()
         {
             gameObject.SetActive(true);
+            cam.enabled = true;
         }
 
         private void Update()
