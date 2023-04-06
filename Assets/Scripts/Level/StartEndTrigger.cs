@@ -1,13 +1,13 @@
 using Interactions;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 namespace Level
 {
     public class StartEndTrigger : MonoBehaviour
     {
         [SerializeField] private Collider _collider;
-
+        [SerializeField] public UnityEvent onSuccessfulEnd;
         #nullable enable
         private void OnTriggerEnter(Collider other)
         {
@@ -23,7 +23,7 @@ namespace Level
                 {
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
-                    SceneManager.LoadScene(0);
+                    onSuccessfulEnd.Invoke();
                 }
             }
         }
