@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace Menu
@@ -11,6 +12,7 @@ namespace Menu
         public TMP_Text textMesh;
         private void Awake()
         {
+            if (textMesh == null) {return;} 
             textMesh.text = scene.name;
         }
         public void Select()
