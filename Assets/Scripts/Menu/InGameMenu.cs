@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Game;
@@ -10,6 +11,7 @@ namespace Menu
     public class InGameMenu : MonoBehaviour
     {
         [SerializeField] private Canvas menuCanvas;
+        [SerializeField] private InputActionReference pauseAction;
 
         private bool _paused;
 
@@ -17,19 +19,8 @@ namespace Menu
         {
             GameSettings.onGamePaused += Pause;
             GameSettings.onGameResumed += Resume;
-        }
-
-        private void OnValidate()
-        {
-            if (FindObjectOfType<EventSystem>() is null)
-            {
-                EditorApplication.delayCall += () =>
-                {
-                    var eventSystemObject = new GameObject("EventSystem");
-                    eventSystemObject.AddComponent<EventSystem>();
-                    eventSystemObject.AddComponent<InputSystemUIInputModule>();
-                };
-            }
+            pauseAction.action.started += OnPausePressed;
+            pauseAction.action.Enable();
         }
 
         private void OnDestroy()
@@ -38,12 +29,8 @@ namespace Menu
             GameSettings.onGameResumed -= Resume;
         }
 
-        public void OnPausePressed(InputAction.CallbackContext context)
+        private void OnPausePressed(InputAction.CallbackContext context)
         {
-            if (!context.started)
-            {
-                return;
-            }
             if (_paused)
             {
                 GameSettings.ResumeGame();
