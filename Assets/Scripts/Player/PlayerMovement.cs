@@ -125,13 +125,13 @@ namespace Player
             {
                 return;
             }
-            if (_playerReader.RunPressed)
-            {
-                _currentSpeed = runSpeed;
-            }
-            else if (_playerReader.CrouchPressed)
+            if (_playerReader.CrouchPressed)
             {
                 _currentSpeed = crouchSpeed;
+            }
+            else if (_playerReader.RunPressed)
+            {
+                _currentSpeed = runSpeed;
             }
             else
             {
