@@ -8,10 +8,21 @@ namespace Menu
     public class LevelSelector : MonoBehaviour
     {
         public SceneAsset scene;
-        public TMP_Text textMesh;
-        private void Awake()
+        #nullable enable
+        [SerializeField] private string? title;
+        public TMP_Text? textMesh;
+        #nullable disable
+        private void OnValidate()
         {
-            textMesh.text = scene.name;
+            if (textMesh is null)
+            {
+                return;
+            }
+
+            if (title is not null)
+            {
+                textMesh.text = title; 
+            }
         }
         public void Select()
         {
