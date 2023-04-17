@@ -3017,9 +3017,33 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3369439223838982775, guid: a9fa3e5371b310e488bb80e8ead2a9e7, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4067638547137017703, guid: a9fa3e5371b310e488bb80e8ead2a9e7, type: 3}
       propertyPath: m_Name
       value: WinScreenMobile
+      objectReference: {fileID: 0}
+    - target: {fileID: 4067638547137017703, guid: a9fa3e5371b310e488bb80e8ead2a9e7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532031529513283744, guid: a9fa3e5371b310e488bb80e8ead2a9e7, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532031530922220209, guid: a9fa3e5371b310e488bb80e8ead2a9e7, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659396540179021974, guid: a9fa3e5371b310e488bb80e8ead2a9e7, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028961147130245577, guid: a9fa3e5371b310e488bb80e8ead2a9e7, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9111849805677901941, guid: a9fa3e5371b310e488bb80e8ead2a9e7, type: 3}
       propertyPath: m_Pivot.x
