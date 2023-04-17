@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -65,7 +66,13 @@ namespace Player
             _characterCenter = _controller.center;
             _currentSpeed = speed;
         }
-        
+
+        private void OnDestroy()
+        {
+            GameSettings.onGamePaused -= OnGamePause;
+            GameSettings.onGameResumed -= OnGameResumed;
+        }
+
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
             var body = hit.collider.attachedRigidbody;
