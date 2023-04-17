@@ -1,3 +1,4 @@
+using Game;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -27,6 +28,7 @@ namespace Menu
         public void Select()
         {
             SceneManager.LoadScene(scene.name);
+            GameSettings.ResumeGame();
         }
     }
 }

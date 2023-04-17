@@ -27,6 +27,7 @@ namespace Menu
         {
             GameSettings.onGamePaused -= Pause;
             GameSettings.onGameResumed -= Resume;
+            pauseAction.action.started -= OnPausePressed;
         }
 
         private void OnPausePressed(InputAction.CallbackContext context)
