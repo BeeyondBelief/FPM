@@ -9,8 +9,13 @@ namespace Menu
         #nullable enable
         private MenuSection? _from;
         #nullable disable
-        
-        private void OnValidate()
+
+        private void Awake()
+        {
+            FindParentSection();
+        }
+
+        private void FindParentSection()
         {
             var trans = transform;
             while (true)
@@ -18,13 +23,13 @@ namespace Menu
                 var parent = trans.parent;
                 if (parent is null)
                 {
-                    return;
+                    break;
                 }
                 var section = parent.gameObject.GetComponent<MenuSection>();
                 if (section is not null)
                 {
                     _from = section;
-                    return;
+                    break;
                 }
                 trans = parent.transform;
             }
@@ -36,7 +41,6 @@ namespace Menu
             {
                 _from.gameObject.SetActive(false);
             }
-
             _to.gameObject.SetActive(true);
         }
     }
