@@ -1,6 +1,5 @@
 using Game;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,7 +7,7 @@ namespace Menu
 {
     public class LevelSelector : MonoBehaviour
     {
-        public SceneAsset scene;
+        public string sceneName;
         #nullable enable
         [SerializeField] private string? title;
         public TMP_Text? textMesh;
@@ -27,7 +26,7 @@ namespace Menu
         }
         public void Select()
         {
-            SceneManager.LoadScene(scene.name);
+            SceneManager.LoadScene(sceneName);
             GameSettings.ResumeGame();
         }
     }
