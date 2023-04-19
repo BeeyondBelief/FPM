@@ -343,6 +343,10 @@ PrefabInstance:
       propertyPath: title
       value: "\u0412 \u0433\u043B\u0430\u0432\u043D\u043E\u0435 \u043C\u0435\u043D\u044E"
       objectReference: {fileID: 0}
+    - target: {fileID: 2418129159547559379, guid: 2bd57a2fcb1d5457eaaafd1b545e3f05, type: 3}
+      propertyPath: sceneName
+      value: Menu
+      objectReference: {fileID: 0}
     - target: {fileID: 5127181476751635592, guid: 2bd57a2fcb1d5457eaaafd1b545e3f05, type: 3}
       propertyPath: m_text
       value: "\u0412 \u0433\u043B\u0430\u0432\u043D\u043E\u0435 \u043C\u0435\u043D\u044E"
