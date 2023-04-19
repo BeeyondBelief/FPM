@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -22,7 +21,7 @@ namespace Guard
             _currentPoint = (_currentPoint + 1) % points.Count;
             return point;
         }
-
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             for (var i = 0; i < points.Count; i++)
@@ -35,5 +34,6 @@ namespace Guard
                 Handles.Label(pos, i.ToString());
             }
         }
+#endif
     }
 }

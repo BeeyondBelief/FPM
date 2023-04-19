@@ -1,9 +1,7 @@
-using System;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Game;
-using UnityEditor;
 
 
 namespace Player
@@ -36,26 +34,6 @@ namespace Player
         private float _characterNormalHeight;
         private Vector3 _characterCenter;
         private Vector3 _velocity;
-        
-        private void OnValidate()
-        {
-            var foundCamera = FindObjectOfType<Camera>();
-            if (foundCamera is null)
-            {
-                EditorApplication.delayCall += () =>
-                {
-                    var cameraObject = new GameObject("CameraRoot");
-                    cameraObject.AddComponent<Camera>();
-                    cameraObject.AddComponent<AudioListener>();
-                    cameraObject.AddComponent<CinemachineBrain>();
-                    cam = cameraObject.GetComponent<CinemachineBrain>();
-                };
-            }
-            else
-            {
-                cam = foundCamera.GetComponent<CinemachineBrain>();
-            }
-        }
 
         private void Awake()
         {
