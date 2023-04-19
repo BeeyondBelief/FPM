@@ -9,12 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: c6478cc5a3e974ae79683589b58de281
   - enabled: 1
-    path: Assets/Scenes/TestField.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/TestRigidBodies.unity
-    guid: f7d5280c5d54b544aab58f701cd2e832
-  - enabled: 1
     path: Assets/Scenes/FirstLevel.unity
     guid: a1766af9737a4d54cb9fd1dd3c00401e
   m_configObjects: {}
