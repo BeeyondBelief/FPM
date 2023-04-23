@@ -2,10 +2,14 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Game;
-
+using Sound;
 
 namespace Player
 {
+    internal enum MoveState
+    {
+        Base, Run, Crouch
+    }
     public class PlayerMovement : MonoBehaviour
     {
 
@@ -14,6 +18,7 @@ namespace Player
         public float crouchSpeed = 3f;
         public float speed = 7f;
         public float runSpeed = 15f;
+        private MoveState _moveState = MoveState.Base;
 
         [Header("Jumping")]
         public float jumpForce = 7f;
@@ -24,9 +29,18 @@ namespace Player
         [Header("Physics")] 
         [SerializeField] private float _playerMass = 50f;
 
+        [Header("Sounds")]
+        [SerializeField] private AudioSource _audioSource;
+
+        [SerializeField] private float _footStepOffset = 0.5f;
+        [SerializeField] private float _footStepRunOffset = 0.3f;
+        [SerializeField] private float _footStepCrouchOffset = 0.9f;
+        private float _footStepTimer = 0;
+
         [Header("Helpers")]
         [SerializeField] private CharacterController _controller;
         [SerializeField] private PlayerInput _playerInput;
+        
 
         private PlayerReader _playerReader;
         private float _ySpeed;
@@ -82,7 +96,8 @@ namespace Player
             ApplyCameraAngles();
             ApplyGravityAndJump();
             HandleCrouching();
-            UpdateSpeed();
+            UpdateMoveState();
+            HandleFootSound();
             
             var moveDirection = GetMovementDirection();
             _velocity = AdjustVelocity(moveDirection.magnitude * _currentSpeed * moveDirection.normalized);
@@ -103,8 +118,58 @@ namespace Player
                 _controller.center = new Vector3(_characterCenter.x, _characterCenter.y / 2, _characterCenter.z);
             }
         }
+        
 
-        private void UpdateSpeed()
+        private void HandleFootSound()
+        {
+            if (!_controller.isGrounded)
+            {
+                return;
+            }
+
+            _footStepTimer -= Time.deltaTime;
+
+            if (_footStepTimer > 0 || _velocity.x == 0 || _velocity.z == 0)
+            {
+                return;
+            }
+
+            RaycastHit hit;
+            if (!Physics.Raycast(transform.position, Vector3.down, out hit, _controller.height))
+            {
+                return;
+            }
+
+            FootSoundEffect sound = hit.collider.gameObject.GetComponent<FootSoundEffect>();
+            if (sound is not null)
+            {
+                var clip = sound.GetSound();
+                _audioSource.PlayOneShot(clip);
+                _footStepTimer = GetFootStepOffset();
+            }
+        }
+        /**
+         * Возвращает время ожидания до следующего шага
+         */
+        private float GetFootStepOffset()
+        {
+            var stepOffset = _footStepOffset;
+            switch (_moveState)
+            {
+                case MoveState.Base:
+                    stepOffset = _footStepOffset;
+                    break;
+                case MoveState.Crouch:
+                    stepOffset = _footStepCrouchOffset;
+                    break;
+                case MoveState.Run:
+                    stepOffset = _footStepRunOffset;
+                    break;
+            }
+            return stepOffset;
+        }
+
+        private void UpdateMoveState()
         {
             if (!_controller.isGrounded)
             {
@@ -112,23 +177,24 @@ namespace Player
             }
             if (_playerReader.CrouchPressed)
             {
+                _moveState = MoveState.Crouch;
                 _currentSpeed = crouchSpeed;
             }
             else if (_playerReader.RunPressed)
             {
+                _moveState = MoveState.Run;
                 _currentSpeed = runSpeed;
             }
             else
             {
+                _moveState = MoveState.Base;
                 _currentSpeed = speed;   
             }
         }
 
         private Vector3 AdjustVelocity(Vector3 velocity)
         {
-            Ray ray = new(transform.position, Vector3.down);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, _controller.height))
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, _controller.height))
             {
                 Quaternion slopeRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
                 Vector3 adjusted = slopeRotation * velocity;
