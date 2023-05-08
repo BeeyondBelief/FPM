@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -12,9 +13,9 @@ namespace Guard
 
         [Tooltip("Дистанция, при которой засчитывается достижение цели.")]
         public float travelReachedDistance = 0.5f;
-
-        [Tooltip("Объект преследования.")] public Transform catchTarget;
-
+        #nullable enable
+        [Tooltip("Объект преследования.")] public PlayerMovement? catchTarget;
+        #nullable disable
         [Tooltip("Если объекты преследования находятся в радиусе поиска, они становятся целью.")]
         public float searchRange = 15f;
 
@@ -43,24 +44,45 @@ namespace Guard
                 nav.destination = point.transform.position;
         }
 
+        private void MaybeNextPoint()
+        {
+            if (!nav.pathPending && nav.remainingDistance < travelReachedDistance)
+                SetNextPoint();
+        }
+        
         private void FixedUpdate()
         {
-            var vectorToPlayer = catchTarget.position - transform.position;
+            if (catchTarget is null)
+            {
+                MaybeNextPoint();
+                return;
+            }   
+            var vectorToPlayer = catchTarget.transform.position - transform.position;
             if (vectorToPlayer.magnitude > searchRange)
             {
                 Chasing = false;
-                if (!nav.pathPending && nav.remainingDistance < travelReachedDistance)
-                    SetNextPoint();
+                MaybeNextPoint();
                 return;
             }
 
-            Chasing = true;
-            nav.destination = catchTarget.position;
-            if (!nav.pathPending && nav.remainingDistance < catchDistance)
+            if (Physics.Raycast(transform.position, vectorToPlayer.normalized, out var hit, searchRange))
             {
-                onTargetCaught?.Invoke();
-                nav.destination = transform.position;
+                if (hit.transform.GetComponent<PlayerMovement>() is not null)
+                {
+                    Chasing = true;
+                    nav.destination = catchTarget.transform.position;
+                }
             }
+            
+            if (Chasing)
+            {
+                if (!nav.pathPending && nav.remainingDistance < catchDistance)
+                {
+                    onTargetCaught?.Invoke();
+                }
+            }
+            
+            MaybeNextPoint();
         }
 
         private void OnDrawGizmos()
