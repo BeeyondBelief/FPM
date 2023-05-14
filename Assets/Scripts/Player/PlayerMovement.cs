@@ -41,10 +41,10 @@ namespace Player
         [SerializeField] private CharacterController _controller;
         [SerializeField] private PlayerInput _playerInput;
         
+        public float CurrentSpeed { get; private set; }
 
         private PlayerReader _playerReader;
         private float _ySpeed;
-        private float _currentSpeed;
         private float _characterNormalHeight;
         private Vector3 _characterCenter;
         private Vector3 _velocity;
@@ -56,7 +56,7 @@ namespace Player
             _playerReader = new PlayerReader(_playerInput);
             _characterNormalHeight = _controller.height;
             _characterCenter = _controller.center;
-            _currentSpeed = speed;
+            CurrentSpeed = speed;
         }
 
         private void OnDestroy()
@@ -100,7 +100,7 @@ namespace Player
             HandleFootSound();
             
             var moveDirection = GetMovementDirection();
-            _velocity = AdjustVelocity(moveDirection.magnitude * _currentSpeed * moveDirection.normalized);
+            _velocity = AdjustVelocity(moveDirection.magnitude * CurrentSpeed * moveDirection.normalized);
             _velocity.y += _ySpeed;
             _controller.Move(_velocity * Time.deltaTime);
         }
@@ -178,17 +178,17 @@ namespace Player
             if (_playerReader.CrouchPressed)
             {
                 _moveState = MoveState.Crouch;
-                _currentSpeed = crouchSpeed;
+                CurrentSpeed = crouchSpeed;
             }
             else if (_playerReader.RunPressed)
             {
                 _moveState = MoveState.Run;
-                _currentSpeed = runSpeed;
+                CurrentSpeed = runSpeed;
             }
             else
             {
                 _moveState = MoveState.Base;
-                _currentSpeed = speed;   
+                CurrentSpeed = speed;   
             }
         }
 
