@@ -4637,13 +4637,25 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7538723221653778662, guid: 2709f313f9f50284c887fc7a81e04b5d, type: 3}
+      propertyPath: _searches.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538723221653778662, guid: 2709f313f9f50284c887fc7a81e04b5d, type: 3}
       propertyPath: _tactics.Array.data[0]
       value: 
-      objectReference: {fileID: 1766806803}
+      objectReference: {fileID: 0}
     - target: {fileID: 7538723221653778662, guid: 2709f313f9f50284c887fc7a81e04b5d, type: 3}
       propertyPath: _tactics.Array.data[1]
       value: 
-      objectReference: {fileID: 1766806803}
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538723221653778662, guid: 2709f313f9f50284c887fc7a81e04b5d, type: 3}
+      propertyPath: _searches.Array.data[0]
+      value: 
+      objectReference: {fileID: 1766806807}
+    - target: {fileID: 7538723221653778662, guid: 2709f313f9f50284c887fc7a81e04b5d, type: 3}
+      propertyPath: _searches.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7538723221653778662, guid: 2709f313f9f50284c887fc7a81e04b5d, type: 3}
       propertyPath: onTargetCaught.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -10347,7 +10359,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6891268724970491239, guid: 2709f313f9f50284c887fc7a81e04b5d, type: 3}
   m_PrefabInstance: {fileID: 767265049}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1766806803
+--- !u!114 &1766806807
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10356,10 +10368,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1766806802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8759984e6c894dd7b74f4e69bff18786, type: 3}
+  m_Script: {fileID: 11500000, guid: 55ddeb41e5604400a06fd4ee1bbc1477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alwaysVisibleDistance: 5
   maxVisibleDistance: 15
+  angle: 30
 --- !u!1 &1781538516
 GameObject:
   m_ObjectHideFlags: 0

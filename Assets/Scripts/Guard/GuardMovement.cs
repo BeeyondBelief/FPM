@@ -3,6 +3,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Guard
 {
@@ -23,7 +24,7 @@ namespace Guard
         #nullable disable
 
         [SerializeField]
-        private List<SearchTactic> _tactics;
+        private List<GuardSearch> _searches;
 
         [Tooltip("Дистанция срабатывания захвата объекта.")]
         public float catchDistance = 1.5f;
@@ -33,10 +34,8 @@ namespace Guard
 
         public float waitOnControlPoints = 1f;
 
-        private SearchTactic _workedTactic;
         private float _currentWait;
-    
-        
+
         public bool Chasing { get; private set; }
 
         /// <summary>
@@ -63,18 +62,23 @@ namespace Guard
         
         private void FixedUpdate()
         {
-            if (_catchTarget is not null)
+            if (_catchTarget is null)
             {
-                foreach (var tactic in _tactics)
+                MaybeNextPoint();
+                return;
+            }
+            foreach (var search in _searches)
+            {
+                if (search.Search(this, _catchTarget))
                 {
-                    if (tactic.Work(this, _catchTarget))
+                    if (search.IsCaught(this, _catchTarget))
                     {
-                        _workedTactic = tactic;
-                        ChaiseTarget();
-                        break;
+                        onTargetCaught?.Invoke();
+                        return;
                     }
+                    ChaiseTarget();
+                    break;
                 }
-                MaybeCaught();
             }
             MaybeNextPoint();
         }
@@ -87,20 +91,6 @@ namespace Guard
             }
             Chasing = true;
             _nav.destination = _catchTarget.transform.position;
-        }
-
-        private void MaybeCaught()
-        {
-            if (!Chasing || _catchTarget is null)
-            {
-                return;
-            }
-            var vectorToPlayer = _catchTarget.transform.position - transform.position;
-
-            if (!_nav.pathPending && vectorToPlayer.magnitude < catchDistance)
-            {
-                onTargetCaught?.Invoke();
-            }
         }
 
         private void OnDrawGizmos()
