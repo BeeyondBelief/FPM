@@ -1,25 +1,30 @@
+using System.Collections.Generic;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
-// ReSharper disable StringLiteralTypo
+using UnityEngine.Serialization;
 
 namespace Guard
 {
     public class GuardMovement : MonoBehaviour
     {
-        [Tooltip("Объекты патрулирования.")] public TravelRoute travelRoute;
+        [Tooltip("Маршрут патрулирования.")]
+        [SerializeField]
+        private TravelRoute _travelRoute;
+        
+        [Tooltip("Навигатор")]
+        [SerializeField]
+        private NavMeshAgent _nav;
 
-        [Tooltip("Дистанция, при которой засчитывается достижение цели.")]
-        public float travelReachedDistance = 0.5f;
         #nullable enable
-        [Tooltip("Объект преследования.")] public PlayerMovement? catchTarget;
+        [Tooltip("Объект преследования.")]
+        [SerializeField]
+        private PlayerMovement? _catchTarget;
         #nullable disable
-        [Tooltip("Если объекты преследования находятся в радиусе поиска, они становятся целью.")]
-        public float searchRange = 15f;
 
-        [Tooltip("Навигатор")] public NavMeshAgent nav;
+        [SerializeField]
+        private List<GuardSearch> _searches;
 
         [Tooltip("Дистанция срабатывания захвата объекта.")]
         public float catchDistance = 1.5f;
@@ -27,72 +32,72 @@ namespace Guard
         [Tooltip("Событие, срабатывает если объект схвачен.")]
         public UnityEvent onTargetCaught;
 
+        public float waitOnControlPoints = 1f;
+
+        private float _currentWait;
+
         public bool Chasing { get; private set; }
 
-        public void RestartThisLevel()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-
         /// <summary>
-        /// Установить следующую точку как цель
+        /// Устанавливает следующую точку как цель, если маршрут завершен.
         /// </summary>
-        private void SetNextPoint()
-        {
-            var point = travelRoute.GetNext();
-            if (point is not null)
-                nav.destination = point.transform.position;
-        }
-
         private void MaybeNextPoint()
         {
-            if (!nav.pathPending && nav.remainingDistance < travelReachedDistance)
-                SetNextPoint();
+            if (!_nav.pathPending && _nav.remainingDistance < 0.1f)
+            {
+                Chasing = false;
+                if (waitOnControlPoints - _currentWait > 0)
+                {
+                    _currentWait += Time.deltaTime;
+                }
+                else
+                {
+                    _currentWait = 0;
+                    var point = _travelRoute.GetNext();
+                    if (point is not null)
+                        _nav.destination = point.transform.position;
+                }
+            }
         }
         
         private void FixedUpdate()
         {
-            if (catchTarget is null)
+            if (_catchTarget is null)
             {
                 MaybeNextPoint();
                 return;
-            }   
-            var vectorToPlayer = catchTarget.transform.position - transform.position;
-            if (vectorToPlayer.magnitude > searchRange)
-            {
-                Chasing = false;
-                MaybeNextPoint();
-                return;
             }
-
-            if (Physics.Raycast(transform.position, vectorToPlayer.normalized, out var hit, searchRange))
+            foreach (var search in _searches)
             {
-                if (hit.transform.GetComponent<PlayerMovement>() is not null)
+                if (search.Search(this, _catchTarget))
                 {
-                    Chasing = true;
-                    nav.destination = catchTarget.transform.position;
+                    if (search.IsCaught(this, _catchTarget))
+                    {
+                        onTargetCaught?.Invoke();
+                        return;
+                    }
+                    ChaiseTarget();
+                    break;
                 }
             }
-            
-            if (Chasing)
-            {
-                if (!nav.pathPending && nav.remainingDistance < catchDistance)
-                {
-                    onTargetCaught?.Invoke();
-                }
-            }
-            
             MaybeNextPoint();
+        }
+
+        private void ChaiseTarget()
+        {
+            if (_catchTarget is null)
+            {
+                return;
+            }
+            Chasing = true;
+            _nav.destination = _catchTarget.transform.position;
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, searchRange);
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, catchDistance);
-            if (!Chasing)
-                Gizmos.DrawLine(transform.position, nav.destination);
+            Gizmos.DrawLine(transform.position, _nav.destination);
         }
     }
 }
