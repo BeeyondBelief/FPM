@@ -31,9 +31,11 @@ namespace Guard
         [Tooltip("Событие, срабатывает если объект схвачен.")]
         public UnityEvent onTargetCaught;
 
-        
-        private SearchTactic _workedTactic;
+        public float waitOnControlPoints = 1f;
 
+        private SearchTactic _workedTactic;
+        private float _currentWait;
+    
         
         public bool Chasing { get; private set; }
 
@@ -45,9 +47,17 @@ namespace Guard
             if (!_nav.pathPending && _nav.remainingDistance < 0.1f)
             {
                 Chasing = false;
-                var point = _travelRoute.GetNext();
-                if (point is not null)
-                    _nav.destination = point.transform.position;
+                if (waitOnControlPoints - _currentWait > 0)
+                {
+                    _currentWait += Time.deltaTime;
+                }
+                else
+                {
+                    _currentWait = 0;
+                    var point = _travelRoute.GetNext();
+                    if (point is not null)
+                        _nav.destination = point.transform.position;
+                }
             }
         }
         

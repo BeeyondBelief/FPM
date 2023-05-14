@@ -4639,7 +4639,7 @@ PrefabInstance:
     - target: {fileID: 7538723221653778662, guid: 2709f313f9f50284c887fc7a81e04b5d, type: 3}
       propertyPath: _tactics.Array.data[0]
       value: 
-      objectReference: {fileID: 1766806807}
+      objectReference: {fileID: 1766806803}
     - target: {fileID: 7538723221653778662, guid: 2709f313f9f50284c887fc7a81e04b5d, type: 3}
       propertyPath: _tactics.Array.data[1]
       value: 
@@ -10360,19 +10360,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxVisibleDistance: 15
---- !u!114 &1766806807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1766806802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 403ba66b82e84e67b561a9a6d12ac9af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  searchRange: 15
 --- !u!1 &1781538516
 GameObject:
   m_ObjectHideFlags: 0
