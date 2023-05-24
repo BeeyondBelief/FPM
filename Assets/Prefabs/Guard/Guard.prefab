@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3106852030520218955}
   - component: {fileID: 3106852030520218805}
   - component: {fileID: 2027070386563360971}
+  - component: {fileID: 6031680130815961675}
+  - component: {fileID: 4951299897829890483}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -44,10 +46,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 6
+  m_Acceleration: 10
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 360
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -68,17 +70,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002bc9270cd56d648a97a657e679ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointsStorageToPatrol: {fileID: 0}
-  targetToCatch: {fileID: 0}
-  fieldOfView: 90
-  maxRange: 35
-  nav: {fileID: 3106852030520218805}
-  onTargetCatched:
+  _travelRoute: {fileID: 0}
+  _nav: {fileID: 0}
+  _catchTarget: {fileID: 0}
+  _searches:
+  - {fileID: 6031680130815961675}
+  - {fileID: 4951299897829890483}
+  catchDistance: 1.5
+  onTargetCaught:
     m_PersistentCalls:
       m_Calls: []
-  debug: 0
-  text: {fileID: 0}
-  goesToThatPosition: {fileID: 0}
+  waitOnControlPoints: 1
+--- !u!114 &6031680130815961675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106852030520218954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55ddeb41e5604400a06fd4ee1bbc1477, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alwaysVisibleDistance: 6
+  maxVisibleDistance: 15
+  angle: 30
+--- !u!114 &4951299897829890483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106852030520218954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce6228f5b3a43ee8d696bf2907d017e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxListeningDistance: 20
+  objectsLowerSound: 0.8
+  hearThreshold: 3
 --- !u!1 &3106852030752063632
 GameObject:
   m_ObjectHideFlags: 0
