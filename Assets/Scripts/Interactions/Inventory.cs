@@ -42,7 +42,8 @@ namespace Interactions
 
             var pos = _reader.MousePos; 
             var ray = _camera.ScreenPointToRay(pos);
-            if (Physics.Raycast(ray, out var hit, pickDistance))
+            bool isOverUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+            if (!isOverUI && Physics.Raycast(ray, out var hit, pickDistance))
             {
                 var collectable = hit.collider.gameObject.GetComponent<Collectable>();
                 if (collectable is null)
