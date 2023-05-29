@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -944,6 +944,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7210737137681029287, guid: a1d3b17811662c54fab06386a2119acc, type: 3}
   m_PrefabInstance: {fileID: 144636638}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &151176323 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2354927334847938384, guid: 67b327773b833074b81de9bffc5e6aa7, type: 3}
+  m_PrefabInstance: {fileID: 1314017914}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12ae1b5d6da14566879f42ce6546ebda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &172236560
 GameObject:
   m_ObjectHideFlags: 0
@@ -8073,7 +8084,7 @@ PrefabInstance:
     - target: {fileID: 2027070386563360971, guid: 132edec2d001f8a4ab461016abb90759, type: 3}
       propertyPath: _catchTarget
       value: 
-      objectReference: {fileID: 1839402090}
+      objectReference: {fileID: 151176323}
     - target: {fileID: 2027070386563360971, guid: 132edec2d001f8a4ab461016abb90759, type: 3}
       propertyPath: _travelRoute
       value: 
@@ -8282,6 +8293,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2354927334847938384, guid: 67b327773b833074b81de9bffc5e6aa7, type: 3}
+      propertyPath: view
+      value: 
+      objectReference: {fileID: 560287563}
     - target: {fileID: 6690114196930580644, guid: 67b327773b833074b81de9bffc5e6aa7, type: 3}
       propertyPath: m_Name
       value: Player
@@ -11328,17 +11343,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &1839402090 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6690114198418297913, guid: 67b327773b833074b81de9bffc5e6aa7, type: 3}
-  m_PrefabInstance: {fileID: 1314017914}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c3ecfb9d8bdd4da1819477eae60789f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1842661584
 GameObject:
   m_ObjectHideFlags: 0

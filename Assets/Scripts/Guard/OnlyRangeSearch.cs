@@ -1,4 +1,3 @@
-using Player;
 using UnityEngine;
 
 namespace Guard
@@ -10,7 +9,7 @@ namespace Guard
         {
             _range = range;
         }
-        public bool IsFound(GuardMovement guard, PlayerMovement player)
+        public bool IsFound(GuardMovement guard, Player.Player player)
         {
             var vectorToPlayer = player.transform.position - guard.transform.position;
             return vectorToPlayer.magnitude < _range;
@@ -28,7 +27,7 @@ namespace Guard
             _rangeTactic = new OnlyRangeTactic(searchRange);
         }
 
-        public override bool Search(GuardMovement guard, PlayerMovement player)
+        public override bool Search(GuardMovement guard, Player.Player player)
         {
             return _rangeTactic.IsFound(guard, player);
         }

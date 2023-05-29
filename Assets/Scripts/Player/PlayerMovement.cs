@@ -1,33 +1,17 @@
-using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Game;
 using Sound;
 
 namespace Player
 {
-    internal enum MoveState
+    public enum MoveState
     {
-        Base, Run, Crouch
+        Walk, Run, Crouch
     }
     public class PlayerMovement : MonoBehaviour
     {
-
-        [Header("Movement")]
-        public CinemachineBrain cam;
-        public float crouchSpeed = 3f;
-        public float speed = 7f;
-        public float runSpeed = 15f;
-        private MoveState _moveState = MoveState.Base;
-
-        [Header("Jumping")]
-        public float jumpForce = 7f;
-
-        [Header("Gravity")]
-        public float gravityForce = -9.81f;
-
-        [Header("Physics")] 
-        [SerializeField] private float _playerMass = 50f;
+        [Header("Player")]
+        [SerializeField] private Player _player;
 
         [Header("Sounds")]
         [SerializeField] private AudioSource _audioSource;
@@ -42,52 +26,21 @@ namespace Player
         [SerializeField] private PlayerInput _playerInput;
         
         public float CurrentSpeed { get; private set; }
+        public MoveState MoveState { get; private set; }
+        public Vector3 Velocity { get; private set; }
 
         private PlayerReader _playerReader;
         private float _ySpeed;
         private float _characterNormalHeight;
         private Vector3 _characterCenter;
-        private Vector3 _velocity;
 
         private void Awake()
         {
-            GameSettings.onGamePaused += OnGamePause;
-            GameSettings.onGameResumed += OnGameResumed;
             _playerReader = new PlayerReader(_playerInput);
             _characterNormalHeight = _controller.height;
             _characterCenter = _controller.center;
-            CurrentSpeed = speed;
-        }
-
-        private void OnDestroy()
-        {
-            GameSettings.onGamePaused -= OnGamePause;
-            GameSettings.onGameResumed -= OnGameResumed;
-        }
-
-        private void OnControllerColliderHit(ControllerColliderHit hit)
-        {
-            var body = hit.collider.attachedRigidbody;
-            if (body == null || body.isKinematic)
-                return;
-
-            // Не применять силу к объектам на которых стоим
-            if (hit.moveDirection.y < -0.3f)
-                return;
-            //Adds force to the object
-            body.AddForce(_velocity * _playerMass * Time.deltaTime, ForceMode.Impulse);
-        }
-
-        private void OnGamePause()
-        {
-            gameObject.SetActive(false);
-            cam.enabled = false;
-        }
-
-        private void OnGameResumed()
-        {
-            gameObject.SetActive(true);
-            cam.enabled = true;
+            CurrentSpeed = _player.walkSpeed;
+            MoveState = MoveState.Walk;
         }
 
         private void Update()
@@ -98,11 +51,16 @@ namespace Player
             HandleCrouching();
             UpdateMoveState();
             HandleFootSound();
-            
+        }
+
+        private void FixedUpdate()
+        {
             var moveDirection = GetMovementDirection();
-            _velocity = AdjustVelocity(moveDirection.magnitude * CurrentSpeed * moveDirection.normalized);
-            _velocity.y += _ySpeed;
-            _controller.Move(_velocity * Time.deltaTime);
+            var velocity = AdjustVelocity(moveDirection.magnitude * CurrentSpeed * moveDirection.normalized);
+            velocity.y += _ySpeed;
+            Velocity = velocity;
+            _controller.Move(Velocity * Time.deltaTime);
+            _player.transform.position = _controller.transform.position;
         }
 
         private void HandleCrouching()
@@ -118,7 +76,6 @@ namespace Player
                 _controller.center = new Vector3(_characterCenter.x, _characterCenter.y / 2, _characterCenter.z);
             }
         }
-        
 
         private void HandleFootSound()
         {
@@ -129,7 +86,7 @@ namespace Player
 
             _footStepTimer -= Time.deltaTime;
 
-            if (_footStepTimer > 0 || _velocity.x == 0 || _velocity.z == 0)
+            if (_footStepTimer > 0 || Velocity.x == 0 || Velocity.z == 0)
             {
                 return;
             }
@@ -154,9 +111,9 @@ namespace Player
         private float GetFootStepOffset()
         {
             var stepOffset = _footStepOffset;
-            switch (_moveState)
+            switch (MoveState)
             {
-                case MoveState.Base:
+                case MoveState.Walk:
                     stepOffset = _footStepOffset;
                     break;
                 case MoveState.Crouch:
@@ -177,18 +134,18 @@ namespace Player
             }
             if (_playerReader.CrouchPressed)
             {
-                _moveState = MoveState.Crouch;
-                CurrentSpeed = crouchSpeed;
+                MoveState = MoveState.Crouch;
+                CurrentSpeed = _player.crouchSpeed;
             }
             else if (_playerReader.RunPressed)
             {
-                _moveState = MoveState.Run;
-                CurrentSpeed = runSpeed;
+                MoveState = MoveState.Run;
+                CurrentSpeed = _player.runSpeed;
             }
             else
             {
-                _moveState = MoveState.Base;
-                CurrentSpeed = speed;   
+                MoveState = MoveState.Walk;
+                CurrentSpeed = _player.walkSpeed;   
             }
         }
 
@@ -196,8 +153,8 @@ namespace Player
         {
             if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, _controller.height))
             {
-                Quaternion slopeRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-                Vector3 adjusted = slopeRotation * velocity;
+                var slopeRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                var adjusted = slopeRotation * velocity;
                 if (adjusted.y < 0)
                 {
                     return adjusted;
@@ -205,7 +162,6 @@ namespace Player
             }
             return velocity;
         }
-       
 
         /// <summary>
         /// Возвращает вектор направления движения
@@ -229,12 +185,12 @@ namespace Player
         {
             if (!_controller.isGrounded)
             {
-                _ySpeed += gravityForce * Time.deltaTime;
+                _ySpeed += _player.gravityForce * Time.deltaTime;
                 return;
             }
             if (_playerReader.JumpPressed)
             {
-                _ySpeed = jumpForce;
+                _ySpeed = _player.jumpForce;
             }
             else
             {
@@ -247,7 +203,8 @@ namespace Player
         /// </summary>
         private void ApplyCameraAngles()
         {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, cam.transform.eulerAngles.y, transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, _player.view.transform.eulerAngles.y,
+                                                transform.eulerAngles.z);
         }
     }
 }

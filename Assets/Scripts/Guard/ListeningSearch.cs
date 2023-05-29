@@ -1,5 +1,3 @@
-using System;
-using Player;
 using UnityEngine;
 
 namespace Guard
@@ -18,7 +16,7 @@ namespace Guard
             _hearThreshold = hearThreshold;
         }
 
-        public bool IsFound(GuardMovement guard, PlayerMovement player)
+        public bool IsFound(GuardMovement guard, Player.Player player)
         {
             var vectorToPlayer = player.transform.position - guard.transform.position;
 
@@ -26,7 +24,7 @@ namespace Guard
             var soundRatio = 1f;
             foreach (var hit in hits)
             {
-                if (hit.transform.GetComponent<PlayerMovement>() is null)
+                if (hit.transform.GetComponent<Player.Player>() is null)
                 {
                     soundRatio *= _dampingPercent;
                 }
@@ -54,7 +52,7 @@ namespace Guard
             _listeningTactic = new ListeningTactic(maxListeningDistance, objectsLowerSound, hearThreshold);
         }
 
-        public override bool Search(GuardMovement guard, PlayerMovement player)
+        public override bool Search(GuardMovement guard, Player.Player player)
         {
             return _listeningTactic.IsFound(guard, player);
         }
