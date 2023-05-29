@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Player
 {
-    public class Player: MonoBehaviour
+    public class PlayerObject: MonoBehaviour
     {
         [Header("Camera")]
         public CinemachineBrain view;

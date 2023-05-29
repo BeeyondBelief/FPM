@@ -11,7 +11,7 @@ namespace Player
     public class PlayerMovement : MonoBehaviour
     {
         [Header("Player")]
-        [SerializeField] private Player _player;
+        [SerializeField] private PlayerObject _player;
 
         [Header("Sounds")]
         [SerializeField] private AudioSource _audioSource;
