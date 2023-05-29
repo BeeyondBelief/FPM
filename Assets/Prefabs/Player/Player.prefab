@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8655986712903495566}
   - component: {fileID: 5916296392356621288}
   - component: {fileID: 2510840738807325609}
+  - component: {fileID: 8572509197713303657}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -58,6 +59,8 @@ MonoBehaviour:
   jumpForce: 6
   gravityForce: -9.81
   mass: 50
+  inventory: {fileID: 8655986712903495566}
+  boons: {fileID: 8572509197713303657}
 --- !u!114 &8655986712903495566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +158,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8572509197713303657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6690114196930580644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ff02c904aa746758aaf8d9710f2111a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 2354927334847938384}
 --- !u!1 &6690114197260523408
 GameObject:
   m_ObjectHideFlags: 0

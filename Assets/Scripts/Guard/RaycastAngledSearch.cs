@@ -1,3 +1,4 @@
+using Behaviours;
 using UnityEngine;
 using Player;
 
@@ -8,33 +9,52 @@ namespace Guard
     {
         private float _maxDistance;
         private float _angle;
+        private float _stealthThreshold;
+        private Vector3 _vectorToPlayer;
 
-        public RaycastAngledTactic(float maxDistance, float angle)
+        public RaycastAngledTactic(float maxDistance, float angle, float stealthThreshold)
         {
             _maxDistance = maxDistance;
             _angle = angle;
+            _stealthThreshold = stealthThreshold;
         }
 
         public bool IsFound(GuardMovement guard, PlayerObject player)
         {
-            var vectorToPlayer = player.transform.position - guard.transform.position;
-
-            if (!CanStraitLook(guard, vectorToPlayer))
+            if (!CanStraitLook(guard, player, out _vectorToPlayer))
             {
                 return false;
             }
 
-            if (Physics.Raycast(guard.transform.position, vectorToPlayer, out var hit, _maxDistance))
+            if (Physics.Raycast(guard.transform.position, _vectorToPlayer, out var hit, _maxDistance))
             {
                 return hit.transform.GetComponent<PlayerObject>() is not null;
             }
 
             return false;
         }
-        private bool CanStraitLook(Component from, Vector3 toPlayer)
+        private bool CanStraitLook(GuardMovement guard, PlayerObject player, out Vector3 toPlayer)
         {
-            var dot = Vector3.Dot(from.transform.forward.normalized, toPlayer.normalized);
-            return Mathf.Acos(dot) * Mathf.Rad2Deg <= _angle;
+            toPlayer = player.transform.position - guard.transform.position;
+
+            if (toPlayer.magnitude > _maxDistance)
+            {
+                return false;
+            }
+
+            var dot = Vector3.Dot(guard.transform.forward.normalized, toPlayer.normalized);
+            if (Mathf.Acos(dot) * Mathf.Rad2Deg > _angle)
+            {
+                return false;
+            }
+            
+            var stealthBoon = player.boons.GetBoon<StealthBoon>();
+            if (stealthBoon is null)
+            {
+                return true;
+            }
+            Debug.Log(stealthBoon.CurrentStealthPower * toPlayer.magnitude < _stealthThreshold);
+            return stealthBoon.CurrentStealthPower * toPlayer.magnitude < _stealthThreshold;
         }
     }
     
@@ -42,6 +62,7 @@ namespace Guard
     {
         public float alwaysVisibleDistance = 3f;
         public float maxVisibleDistance = 15f;
+        public float stealthThreshold = 10f;
         public float angle = 30;
 
         private ITactic _angledTactic;
@@ -49,7 +70,7 @@ namespace Guard
 
         private void Awake()
         {
-            _angledTactic = new RaycastAngledTactic(maxVisibleDistance, angle);
+            _angledTactic = new RaycastAngledTactic(maxVisibleDistance, angle, stealthThreshold);
             _raycastTactic = new Raycast360Tactic(alwaysVisibleDistance);
         }
 
