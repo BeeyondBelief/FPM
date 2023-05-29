@@ -1,4 +1,5 @@
 using UnityEngine;
+using Player;
 
 namespace Guard
 {
@@ -11,13 +12,13 @@ namespace Guard
             _maxDistance = maxDistance;
         }
 
-        public bool IsFound(GuardMovement guard, Player.Player player)
+        public bool IsFound(GuardMovement guard, PlayerObject player)
         {
             var vectorToPlayer = player.transform.position - guard.transform.position;
 
             if (Physics.Raycast(guard.transform.position, vectorToPlayer.normalized, out var hit, _maxDistance))
             {
-                return hit.transform.GetComponent<Player.Player>() is not null;
+                return hit.transform.GetComponent<PlayerObject>() is not null;
             }
 
             return false;
@@ -35,7 +36,7 @@ namespace Guard
             _raycastTactic = new Raycast360Tactic(maxVisibleDistance);
         }
 
-        public override bool Search(GuardMovement guard, Player.Player player)
+        public override bool Search(GuardMovement guard, PlayerObject player)
         {
             return _raycastTactic.IsFound(guard, player);
         }
