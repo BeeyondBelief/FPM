@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace Guard
 {
@@ -20,7 +18,7 @@ namespace Guard
         #nullable enable
         [Tooltip("Объект преследования.")]
         [SerializeField]
-        private PlayerMovement? _catchTarget;
+        private Player.Player? _catchTarget;
         #nullable disable
 
         [SerializeField]
