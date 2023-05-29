@@ -1,5 +1,7 @@
-﻿using Cinemachine;
+﻿using Behaviours;
+using Cinemachine;
 using Game;
+using Interactions;
 using UnityEngine;
 
 
@@ -26,7 +28,10 @@ namespace Player
         public float mass = 50f;
 
         public float CurrentSpeed => _mover.CurrentSpeed;
-        
+
+        [Header("Inventory")] public Inventory inventory;
+        [Header("Boons")] public Boons boons;
+
         private void Awake()
         {
             GameSettings.onGamePaused += OnGamePause;
