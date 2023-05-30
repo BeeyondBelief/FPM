@@ -17,14 +17,20 @@ namespace Behaviours
             sc.isTrigger = true;
         }
 
-        private void OnTriggerStay(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             var player = other.gameObject.GetComponent<PlayerObject>();
             if (player is null)
             {
                 return;
             }
-            player.boons.Add(new StealthBoon(transform.position, radius, stealthPower));
+            var contrl = player.GetComponent<CharacterController>();
+            var customRadius = radius;
+            if (contrl is not null)
+            {
+                customRadius += contrl.radius;
+            }
+            player.boons.Add(new StealthBoon(transform.position, customRadius, stealthPower));
         }
 
         private void OnDrawGizmos()
