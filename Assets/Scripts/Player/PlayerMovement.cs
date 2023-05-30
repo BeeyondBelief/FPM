@@ -46,7 +46,6 @@ namespace Player
         private void Update()
         {
             _playerReader.ReadInputs();
-            ApplyCameraAngles();
             ApplyGravityAndJump();
             HandleCrouching();
             UpdateMoveState();
@@ -196,15 +195,6 @@ namespace Player
             {
                 _ySpeed = -1f;
             }
-        }
-
-        /// <summary>
-        /// Обновляет направление движения в зависимости от направления камеры
-        /// </summary>
-        private void ApplyCameraAngles()
-        {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, _player.view.transform.eulerAngles.y,
-                                                transform.eulerAngles.z);
         }
     }
 }

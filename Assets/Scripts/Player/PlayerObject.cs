@@ -38,6 +38,11 @@ namespace Player
             GameSettings.onGameResumed += OnGameResumed;
         }
 
+        private void Update()
+        {
+            ApplyCameraAngles();
+        }
+
         private void OnDestroy()
         {
             GameSettings.onGamePaused -= OnGamePause;
@@ -67,6 +72,16 @@ namespace Player
                 return;
             //Adds force to the object
             body.AddForce(_mover.Velocity * mass * Time.deltaTime, ForceMode.Impulse);
+        }
+        
+        /// <summary>
+        /// Обновляет направление движения в зависимости от направления камеры
+        /// </summary>
+        private void ApplyCameraAngles()
+        {
+            var trans = _mover.transform;
+            var eulerAngles = trans.eulerAngles;
+            trans.eulerAngles = new Vector3(eulerAngles.x, view.transform.eulerAngles.y, eulerAngles.z);
         }
     }
 }
