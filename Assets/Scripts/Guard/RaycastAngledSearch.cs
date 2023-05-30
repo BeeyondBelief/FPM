@@ -53,7 +53,6 @@ namespace Guard
             {
                 return true;
             }
-            Debug.Log(stealthBoon.CurrentStealthPower * toPlayer.magnitude < _stealthThreshold);
             return stealthBoon.CurrentStealthPower * toPlayer.magnitude < _stealthThreshold;
         }
     }
