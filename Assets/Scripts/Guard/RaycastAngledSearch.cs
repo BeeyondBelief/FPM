@@ -61,7 +61,7 @@ namespace Guard
     {
         public float alwaysVisibleDistance = 3f;
         public float maxVisibleDistance = 15f;
-        public float stealthThreshold = 10f;
+        public float stealthThreshold = 1.5f;
         public float angle = 30;
 
         private ITactic _angledTactic;
