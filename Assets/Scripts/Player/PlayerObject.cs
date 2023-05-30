@@ -1,4 +1,5 @@
-﻿using Behaviours;
+﻿using System;
+using Behaviours;
 using Cinemachine;
 using Game;
 using Interactions;
@@ -27,7 +28,7 @@ namespace Player
         public float gravityForce = -9.81f;
         public float mass = 50f;
 
-        public float CurrentSpeed => _mover.CurrentSpeed;
+        public float Velocity => _mover.Velocity.magnitude;
 
         [Header("Inventory")] public Inventory inventory;
         [Header("Boons")] public Boons boons;
