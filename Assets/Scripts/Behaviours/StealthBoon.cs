@@ -19,9 +19,8 @@ namespace Behaviours
         
         public override bool Tick(PlayerObject player)
         {
-            var awayDistance = (player.transform.position - _initialPosition).magnitude;
-            var dev = awayDistance == 0 ? 1 : awayDistance;
-            CurrentStealthPower = _stealthPower / dev;
+            var awayDistance = Vector3.Distance(player.transform.position, _initialPosition);
+            CurrentStealthPower = Mathf.Lerp(_stealthPower, 0f, awayDistance / _distance);
             return awayDistance > _distance;
         }
     }
