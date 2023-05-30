@@ -32,7 +32,7 @@ namespace Guard
                 }
                 else
                 {
-                    var sound = player.CurrentSpeed * soundRatio;
+                    var sound = player.Velocity * soundRatio;
                     return sound > _hearThreshold;
                 }
             }

@@ -1,4 +1,5 @@
-﻿using Behaviours;
+﻿using System;
+using Behaviours;
 using Cinemachine;
 using Game;
 using Interactions;
@@ -27,7 +28,7 @@ namespace Player
         public float gravityForce = -9.81f;
         public float mass = 50f;
 
-        public float CurrentSpeed => _mover.CurrentSpeed;
+        public float Velocity => _mover.Velocity.magnitude;
 
         [Header("Inventory")] public Inventory inventory;
         [Header("Boons")] public Boons boons;
@@ -36,6 +37,11 @@ namespace Player
         {
             GameSettings.onGamePaused += OnGamePause;
             GameSettings.onGameResumed += OnGameResumed;
+        }
+
+        private void Update()
+        {
+            ApplyCameraAngles();
         }
 
         private void OnDestroy()
@@ -67,6 +73,16 @@ namespace Player
                 return;
             //Adds force to the object
             body.AddForce(_mover.Velocity * mass * Time.deltaTime, ForceMode.Impulse);
+        }
+        
+        /// <summary>
+        /// Обновляет направление движения в зависимости от направления камеры
+        /// </summary>
+        private void ApplyCameraAngles()
+        {
+            var trans = _mover.transform;
+            var eulerAngles = trans.eulerAngles;
+            trans.eulerAngles = new Vector3(eulerAngles.x, view.transform.eulerAngles.y, eulerAngles.z);
         }
     }
 }
