@@ -47,6 +47,11 @@ namespace Behaviours
         }
         #nullable disable
 
+        public IBoon[] GetBoons()
+        {
+            return _boons.ToArray();
+        }
+
         private void FixedUpdate()
         {
             foreach (var boon in _boons)
