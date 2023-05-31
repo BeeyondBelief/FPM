@@ -9,6 +9,7 @@ namespace Behaviours
         private float _distance;
         private float _stealthPower;
         public float CurrentStealthPower { get; private set; }
+        public override string CharImage => "S";
         
         public StealthBoon(Vector3 initialPosition, float edgeDistance, float stealthPower)
         {
