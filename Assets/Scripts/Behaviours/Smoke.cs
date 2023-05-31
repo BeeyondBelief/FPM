@@ -34,4 +34,25 @@ namespace Behaviours
             player.boons.Remove(_boon);
         }
     }
+    public class SmokeBoon: IBoon
+    { 
+        public float CurrentStealthPower { get; }
+        public  string CharImage => "S";
+        public void Apply(PlayerObject player)
+        {
+        }
+
+        public void Tick(PlayerObject player)
+        {
+        }
+
+        public void Destroy(PlayerObject player)
+        {
+        }
+
+        public SmokeBoon(float stealthPower)
+        {
+            CurrentStealthPower = stealthPower;
+        }
+    }
 }

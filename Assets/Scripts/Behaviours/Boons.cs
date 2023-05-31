@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Player;
 using UnityEngine;
 
@@ -18,17 +17,14 @@ namespace Behaviours
         }
 
 #nullable enable
-        public T? GetBoon<T>() where T: Boon
+        public T? GetBoon<T>() where T: IBoon
         {
             var t = typeof(T);
-            foreach (var boon in _boons)
+            foreach (var boon in _boons.Where(boon => boon.GetType() == t))
             {
-                if (boon.GetType() == t)
-                {
-                    return boon as T;
-                }
+                return (T)boon;
             }
-            return null;
+            return default;
         }
 #nullable disable
 
