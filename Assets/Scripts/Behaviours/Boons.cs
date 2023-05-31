@@ -10,29 +10,14 @@ namespace Behaviours
     {
         [SerializeField] private PlayerObject _player;
         private List<IBoon> _boons = new();
-        private List<IBoon> _toDestroy = new();
 
         public void Add(IBoon boon)
         {
-            boon.Apply(_player);
-            RemoveSameBoon(boon);
             _boons.Add(boon);
+            boon.Apply(_player);
         }
 
-        private void RemoveSameBoon(IBoon boon)
-        {
-            var t = boon.GetType();
-            for (var i = 0; i < _boons.Count; i++)
-            {
-                if (_boons[i].GetType() == t)
-                {
-                    _boons.RemoveAt(i);
-                    return;
-                }
-            }
-        }
-
-        #nullable enable
+#nullable enable
         public T? GetBoon<T>() where T: Boon
         {
             var t = typeof(T);
@@ -45,7 +30,13 @@ namespace Behaviours
             }
             return null;
         }
-        #nullable disable
+#nullable disable
+
+        public void Remove(IBoon boon)
+        {
+            boon.Destroy(_player);
+            _boons.Remove(boon);
+        }
 
         public IBoon[] GetBoons()
         {
@@ -56,17 +47,8 @@ namespace Behaviours
         {
             foreach (var boon in _boons)
             {
-                if (boon.Tick(_player))
-                {
-                    _toDestroy.Add(boon);
-                }
+                boon.Tick(_player);
             }
-            _toDestroy.ForEach(boon =>
-            {
-                boon.Destroy(_player);
-                _boons.Remove(boon);
-            });
-            _toDestroy.Clear();
         }
     }
 }

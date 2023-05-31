@@ -1,46 +1,49 @@
-﻿using Player;
+﻿using System;
+using Player;
 using UnityEngine;
 
 namespace Behaviours
 {
-    public abstract class RadiusActivator : MonoBehaviour, IBoonActivator
+    public sealed class RadiusActivator : BoonActivator
     {
-        [SerializeField] private float _radius = 3f;
-        public float Radius { get; private set; }
-        
+        public float radius = 3f;
+
+        public override event Deactivate ShouldDeactivate;
+        public override event Activate ShouldActivate;
+
         private void Awake()
         {
             var sc = gameObject.AddComponent(typeof(SphereCollider)) as SphereCollider;
-            sc.radius = _radius;
+            sc.radius = radius;
             sc.isTrigger = true;
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            var player = other.gameObject.GetComponent<PlayerObject>();
-            if (player is null)
+            if (HasPlayer(other, out var player))
             {
-                return;
+                ShouldActivate?.Invoke(player);
             }
-
-            var contrl = player.GetComponent<CharacterController>();
-            if (contrl is not null)
-            {
-                Radius = contrl.radius + _radius;
-            }
-            else
-            {
-                Radius = _radius;
-            }
-            Activate(player);
         }
 
-        public abstract void Activate(PlayerObject player);
-        
+        private void OnTriggerExit(Collider other)
+        {
+            if (HasPlayer(other, out var player))
+            {
+                ShouldDeactivate?.Invoke(player);
+            }
+        }
+
+        private static bool HasPlayer(Component other, out PlayerObject player)
+        {
+            player = other.gameObject.GetComponent<PlayerObject>();
+            return player is not null;
+        }
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.black;
-            Gizmos.DrawWireSphere(transform.position, _radius);
+            Gizmos.DrawWireSphere(transform.position, radius);
         }
     }
 }
