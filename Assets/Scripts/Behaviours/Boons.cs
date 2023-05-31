@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Player;
 using UnityEngine;
 
@@ -10,42 +9,30 @@ namespace Behaviours
     {
         [SerializeField] private PlayerObject _player;
         private List<IBoon> _boons = new();
-        private List<IBoon> _toDestroy = new();
 
         public void Add(IBoon boon)
         {
-            boon.Apply(_player);
-            RemoveSameBoon(boon);
             _boons.Add(boon);
+            boon.Apply(_player);
         }
 
-        private void RemoveSameBoon(IBoon boon)
-        {
-            var t = boon.GetType();
-            for (var i = 0; i < _boons.Count; i++)
-            {
-                if (_boons[i].GetType() == t)
-                {
-                    _boons.RemoveAt(i);
-                    return;
-                }
-            }
-        }
-
-        #nullable enable
-        public T? GetBoon<T>() where T: Boon
+#nullable enable
+        public T? GetBoon<T>() where T: IBoon
         {
             var t = typeof(T);
-            foreach (var boon in _boons)
+            foreach (var boon in _boons.Where(boon => boon.GetType() == t))
             {
-                if (boon.GetType() == t)
-                {
-                    return boon as T;
-                }
+                return (T)boon;
             }
-            return null;
+            return default;
         }
-        #nullable disable
+#nullable disable
+
+        public void Remove(IBoon boon)
+        {
+            boon.Destroy(_player);
+            _boons.Remove(boon);
+        }
 
         public IBoon[] GetBoons()
         {
@@ -56,17 +43,8 @@ namespace Behaviours
         {
             foreach (var boon in _boons)
             {
-                if (boon.Tick(_player))
-                {
-                    _toDestroy.Add(boon);
-                }
+                boon.Tick(_player);
             }
-            _toDestroy.ForEach(boon =>
-            {
-                boon.Destroy(_player);
-                _boons.Remove(boon);
-            });
-            _toDestroy.Clear();
         }
     }
 }

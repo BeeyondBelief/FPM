@@ -48,7 +48,7 @@ namespace Guard
                 return false;
             }
             
-            var stealthBoon = player.boons.GetBoon<StealthBoon>();
+            var stealthBoon = player.boons.GetBoon<SmokeBoon>();
             if (stealthBoon is null)
             {
                 return true;

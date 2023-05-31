@@ -3851,7 +3851,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6934960890978369727, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_Name
-      value: StealthBoon
+      value: SmokeBoon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
@@ -6401,15 +6401,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6934960890978369725, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.36
+      value: 6.91
       objectReference: {fileID: 0}
     - target: {fileID: 6934960890978369725, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.68
+      value: 2.94
       objectReference: {fileID: 0}
     - target: {fileID: 6934960890978369725, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.3
+      value: -4.06
       objectReference: {fileID: 0}
     - target: {fileID: 6934960890978369725, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6439,9 +6439,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6934960890978369726, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
+      propertyPath: _activator
+      value: 
+      objectReference: {fileID: 2076725942}
     - target: {fileID: 6934960890978369727, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_Name
-      value: StealthBoon (1)
+      value: SmokeBoon (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
@@ -9731,7 +9735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6934960890978369727, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_Name
-      value: StealthBoon (2)
+      value: SmokeBoon (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
@@ -12981,6 +12985,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8649df8dca4122b4485805924d1edd12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2076725942 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1624057522603310328, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
+  m_PrefabInstance: {fileID: 1032456956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7468ce993a4065ad586db6cda7bab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!195 &2127686847 stripped
