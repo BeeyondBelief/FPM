@@ -1,6 +1,4 @@
-﻿using System;
-using Player;
-using UnityEngine;
+﻿using Player;
 
 namespace Behaviours
 {

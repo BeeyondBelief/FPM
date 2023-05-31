@@ -8,19 +8,20 @@ namespace Behaviours
     {
         public float stealthPower = 10f;
         [SerializeField] private BoonActivator _activator;
+        [SerializeField] private BoonDeactivator _deactivator;
 
         private SmokeBoon _boon;
 
         private void Awake()
         {
             _activator.ShouldActivate += Activate;
-            _activator.ShouldDeactivate += Deactivate;
+            _deactivator.ShouldDeactivate += Deactivate;
         }
 
         private void OnDestroy()
         {
             _activator.ShouldActivate -= Activate;
-            _activator.ShouldDeactivate -= Deactivate;
+            _deactivator.ShouldDeactivate -= Deactivate;
         }
 
         public void Activate(PlayerObject player)

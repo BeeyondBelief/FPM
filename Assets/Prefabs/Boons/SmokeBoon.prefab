@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6934960890978369725}
   - component: {fileID: 6934960890978369726}
   - component: {fileID: 1624057522603310328}
+  - component: {fileID: 6058701800943735169}
   m_Layer: 0
   m_Name: SmokeBoon
   m_TagString: Untagged
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stealthPower: 3
   _activator: {fileID: 1624057522603310328}
+  _deactivator: {fileID: 6058701800943735169}
 --- !u!114 &1624057522603310328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,6 +59,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f7468ce993a4065ad586db6cda7bab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 5
+--- !u!114 &6058701800943735169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6934960890978369727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 801425a7cccf430ca8fb16727f0f9a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 5
