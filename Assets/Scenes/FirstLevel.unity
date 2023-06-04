@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2642,7 +2642,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 422376345}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -51.906277, y: 3.0093057, z: -15.524099}
+  m_LocalPosition: {x: -20.24, y: -4.65, z: -5.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5575,6 +5575,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899869520}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &903848897 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4397823093554799401, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
+  m_PrefabInstance: {fileID: 1032456956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7468ce993a4065ad586db6cda7bab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &942904845
 GameObject:
   m_ObjectHideFlags: 0
@@ -6401,15 +6412,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6934960890978369725, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.91
+      value: 6.6
       objectReference: {fileID: 0}
     - target: {fileID: 6934960890978369725, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.94
+      value: -1.32
       objectReference: {fileID: 0}
     - target: {fileID: 6934960890978369725, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.06
+      value: -2.63
       objectReference: {fileID: 0}
     - target: {fileID: 6934960890978369725, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6442,7 +6453,7 @@ PrefabInstance:
     - target: {fileID: 6934960890978369726, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: _activator
       value: 
-      objectReference: {fileID: 2076725942}
+      objectReference: {fileID: 903848897}
     - target: {fileID: 6934960890978369727, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
       propertyPath: m_Name
       value: SmokeBoon (1)
@@ -12985,17 +12996,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8649df8dca4122b4485805924d1edd12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2076725942 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1624057522603310328, guid: fdea2905431cfb94dbbf677cf28d1a82, type: 3}
-  m_PrefabInstance: {fileID: 1032456956}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f7468ce993a4065ad586db6cda7bab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!195 &2127686847 stripped
