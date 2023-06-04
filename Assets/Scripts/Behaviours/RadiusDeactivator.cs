@@ -5,11 +5,19 @@ namespace Behaviours
     public sealed class RadiusDeactivator : BoonDeactivator
     {
         public float radius = 3f;
+        [SerializeField] private SphereCollider _collider;
+
         public override event Deactivate ShouldDeactivate;
         
         private void Awake()
         {
-            RadiusFunctions.AddSphereTrigger(gameObject, radius);
+            _collider.radius = radius;
+        }
+
+        private void OnValidate()
+        {
+
+            _collider.radius = radius;
         }
 
         private void OnTriggerExit(Collider other)
